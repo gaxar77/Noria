@@ -29,7 +29,53 @@ namespace WpfApp1
         {
             InitializeComponent();
 
-            DataContext = _viewModel;    
+            DataContext = _viewModel;
+            
+            ViewModelHelper.LoadFolder(_viewModel, @"C:\");
+        }
+        private void btnGo_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                ViewModelHelper.LoadFolder(_viewModel, txtPath.Text);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Cannot navigate to directory.");
+            }
+        }
+        private void dgrdFolderViewRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                FolderViewItemModel item = dgrdFolderView.SelectedItem as FolderViewItemModel;
+
+                if (item != null)
+                {
+                    ViewModelHelper.LoadFolder(_viewModel, item.FilePath);
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Cannot navigate to directory.");
+            }
+        }
+
+        private void btnUp_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                ViewModelHelper.LoadParentFolder(_viewModel);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Cannot navigate to directory.");
+            }
+        }
+
+        private void dgrdFolderView_GotFocus(object sender, RoutedEventArgs e)
+        {
+            txtPath.InvalidateProperty(TextBox.TextProperty);
         }
     }
 
@@ -168,7 +214,12 @@ namespace WpfApp1
             LoadSubDirectories(viewModel, directoryPath);
             LoadFiles(viewModel, directoryPath);
         }
+        public static void LoadParentFolder(ViewModel viewModel)
+        {
+            string parentDirectory = Directory.GetParent(viewModel.DirectoryPath).FullName;
 
+            ViewModelHelper.LoadFolder(viewModel, parentDirectory);
+        }
         private static void LoadFiles(ViewModel viewModel, string directoryPath)
         {
             var files = Directory.GetFiles(directoryPath);
