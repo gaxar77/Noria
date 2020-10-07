@@ -55,18 +55,27 @@
                 <GridSplitter Grid.Column="1" Width="10" HorizontalAlignment="Stretch" ResizeBehavior="PreviousAndNext" ResizeDirection="Columns"/>
                 <DataGrid Grid.Column="2" ItemsSource="{Binding FolderViewItems}" AutoGenerateColumns="False"
                           Name="dgrdFolderView"
-                          GotFocus="dgrdFolderView_GotFocus">
+                          GotFocus="dgrdFolderView_GotFocus"
+                          GridLinesVisibility="None">
                     <DataGrid.Resources>
                         <Style TargetType="DataGridRow">
                             <EventSetter Event="MouseDoubleClick" Handler="dgrdFolderViewRow_MouseDoubleClick"/>
                         </Style>
+                        <local:IsFolderToIconConverter x:Key="foiConverter"/>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Folder" Binding="{Binding IsFolder}" IsReadOnly="True"/>
+                        <DataGridTemplateColumn Header="" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Rectangle Fill="{Binding Path=IsFolder, Converter={StaticResource foiConverter}, Mode=OneWay}"
+                                               Width="32" Height="32"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                         <DataGridTextColumn Header="File Name" Binding="{Binding FileName}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Created" Binding="{Binding Created}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Modified" Binding="{Binding Modified}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Last Accessed" Binding="{Binding LastAccessed}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Type" Binding="{Binding FileType}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Date Modified" Binding="{Binding Modified}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Size" Binding="{Binding Size}" IsReadOnly="True"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

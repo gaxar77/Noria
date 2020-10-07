@@ -15,6 +15,8 @@ using Shapes = System.Windows.Shapes;
 using System.IO;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Globalization;
+using Microsoft.Win32;
 
 namespace WpfApp1
 {
@@ -30,7 +32,7 @@ namespace WpfApp1
             InitializeComponent();
 
             DataContext = _viewModel;
-            
+
             ViewModelHelper.LoadFolder(_viewModel, @"C:\");
         }
         private void btnGo_Click(object sender, RoutedEventArgs e)
@@ -83,9 +85,11 @@ namespace WpfApp1
     {
         private string _fileName;
         private string _filePath;
+        private string _fileType;
         private DateTime _modified;
         private DateTime _created;
         private DateTime _lastAccessed;
+        private long? _size;
         private bool _isFolder;
 
         public string FilePath
@@ -108,6 +112,30 @@ namespace WpfApp1
                 _fileName = value;
 
                 OnPropertyChanged(nameof(FileName));
+            }
+        }
+
+        public string FileType
+        {
+            get { return _fileType; }
+
+            set
+            {
+                _fileType = value;
+
+                OnPropertyChanged(nameof(FileType));
+            }
+        }
+
+        public long? Size
+        {
+            get { return _size; }
+
+            set
+            {
+                _size = value;
+
+                OnPropertyChanged(nameof(Size));
             }
         }
 
@@ -223,6 +251,7 @@ namespace WpfApp1
         private static void LoadFiles(ViewModel viewModel, string directoryPath)
         {
             var files = Directory.GetFiles(directoryPath);
+            var fileTypeUtility = new FileTypeUtility();
 
             foreach (string file in files)
             {
@@ -233,7 +262,9 @@ namespace WpfApp1
                     Created = File.GetCreationTime(file),
                     Modified = File.GetLastWriteTime(file),
                     LastAccessed = File.GetLastAccessTime(file),
-                    IsFolder = false
+                    Size = FileUtility.GetFileSize(file),
+                    IsFolder = false,
+                    FileType = fileTypeUtility.GetFileType(file)
                 };
 
                 viewModel.FolderViewItems.Add(item);
@@ -243,6 +274,7 @@ namespace WpfApp1
         private static void LoadSubDirectories(ViewModel viewModel, string directoryPath)
         {
             var subDirectories = Directory.GetDirectories(directoryPath);
+            var directoryInfo = new DirectoryInfo(directoryPath);
 
             foreach (string subDirectory in subDirectories)
             {
@@ -253,11 +285,87 @@ namespace WpfApp1
                     Created = Directory.GetCreationTime(subDirectory),
                     Modified = Directory.GetLastWriteTime(subDirectory),
                     LastAccessed = Directory.GetLastAccessTime(subDirectory),
+                    Size = null,
                     IsFolder = true
                 };
 
                 viewModel.FolderViewItems.Add(item);
             }
+        }
+    }
+
+    public class FileTypeUtility
+    {
+        Dictionary<string, string> _fileTypes = new Dictionary<string, string>();
+
+        public FileTypeUtility()
+        {
+
+        }
+
+        public string GetFileType(string fileName)
+        {
+            var extension = Path.GetExtension(fileName);
+            if (String.IsNullOrEmpty(extension))
+            {
+                return String.Empty;
+            }
+
+            if (_fileTypes.ContainsKey(extension))
+            {
+                return _fileTypes[extension];
+            }
+
+            using (var extKey = Registry.ClassesRoot.OpenSubKey(extension))
+            {
+                if (extKey != null)
+                {
+                    var typeKeyName = extKey.GetValue(null, String.Empty);
+
+                    if (typeKeyName != null)
+                    {
+                        using (var typeKey = Registry.ClassesRoot.OpenSubKey(typeKeyName.ToString()))
+                        {
+                            if (typeKey != null)
+                            {
+                                var typeName = typeKey.GetValue(null, String.Empty).ToString();
+
+                                _fileTypes[extension] = typeName;
+                                return typeName;
+                            }
+                        }
+                    }
+                }
+            }
+
+            _fileTypes[extension] = String.Empty;
+            
+            return String.Empty;
+        }
+    }
+
+    public class FileUtility
+    {
+        public static long GetFileSize(string path)
+        {
+            var fileInfo = new FileInfo(path);
+
+            return fileInfo.Length;
+        }
+    }
+
+    public class IsFolderToIconConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return (bool)value == true
+                ? Brushes.Yellow
+                : Brushes.Blue;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }
