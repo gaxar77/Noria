@@ -71,5 +71,9 @@ namespace WpfApp1
         {
             txtPath.InvalidateProperty(TextBox.TextProperty);
         }
+
+        private void dgrdFolderView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+        }
     }
 }

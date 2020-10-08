@@ -7,14 +7,12 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="Navigate">
-                <MenuItem Header="Back"/>
-                <MenuItem Header="Forward"/>
-                <MenuItem Header="Up"/>
-            </MenuItem>
-        </Menu>
-        <Grid Background="LightGray">
+        <Grid Background="LightBlue">
+            <Grid.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Background" Value="Transparent"/>
+                </Style>
+            </Grid.Resources>
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="*"/>
@@ -52,11 +50,19 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <TreeView Grid.Column="0"/>
-                <GridSplitter Grid.Column="1" Width="10" HorizontalAlignment="Stretch" ResizeBehavior="PreviousAndNext" ResizeDirection="Columns"/>
+                <GridSplitter Grid.Column="1" Width="10" 
+                              HorizontalAlignment="Stretch"
+                              ResizeBehavior="PreviousAndNext" 
+                              ResizeDirection="Columns"
+                              Background="LightBlue"/>
                 <DataGrid Grid.Column="2" ItemsSource="{Binding FolderViewItems}" AutoGenerateColumns="False"
                           Name="dgrdFolderView"
                           GotFocus="dgrdFolderView_GotFocus"
-                          GridLinesVisibility="None">
+                          GridLinesVisibility="None"
+                          SelectionMode="Single"
+                          CanUserResizeRows="False"
+                          RowHeaderWidth="0"
+                          SelectionChanged="dgrdFolderView_SelectionChanged">
                     <DataGrid.Resources>
                         <Style TargetType="DataGridRow">
                             <EventSetter Event="MouseDoubleClick" Handler="dgrdFolderViewRow_MouseDoubleClick"/>
@@ -72,10 +78,14 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="File Name" Binding="{Binding FileName}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Type" Binding="{Binding FileType}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Date Modified" Binding="{Binding Modified}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Size" Binding="{Binding Size}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="File Name" Binding="{Binding FileName}"
+                                            IsReadOnly="True" Width="150"/>
+                        <DataGridTextColumn Header="Type" Binding="{Binding FileType}"
+                                            IsReadOnly="True" Width="100"/>
+                        <DataGridTextColumn Header="Date Modified" Binding="{Binding Modified}"
+                                            IsReadOnly="True" Width="150"/>
+                        <DataGridTextColumn Header="Size" Binding="{Binding Size}" 
+                                            IsReadOnly="True" Width="100"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
