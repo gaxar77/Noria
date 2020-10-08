@@ -31,15 +31,15 @@ namespace WpfApp1
             {
                 if (extKey != null)
                 {
-                    var typeKeyName = extKey.GetValue(null, String.Empty);
+                    var typeKeyName = (string)extKey.GetValue(null, String.Empty);
 
-                    if (typeKeyName != null)
+                    if (typeKeyName != String.Empty)
                     {
                         using (var typeKey = Registry.ClassesRoot.OpenSubKey(typeKeyName.ToString()))
                         {
                             if (typeKey != null)
                             {
-                                var typeName = typeKey.GetValue(null, String.Empty).ToString();
+                                var typeName = (string)typeKey.GetValue(null, String.Empty);
 
                                 _fileTypes[extension] = typeName;
                                 return typeName;
