@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="900">
     <DockPanel>
         <Grid Background="LightBlue">
             <Grid.Resources>
@@ -48,6 +48,7 @@
                     <ColumnDefinition Width="200"/>
                     <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="120"/>
                 </Grid.ColumnDefinitions>
                 <TreeView Grid.Column="0"/>
                 <GridSplitter Grid.Column="1" Width="10" 
@@ -80,14 +81,23 @@
                         </DataGridTemplateColumn>
                         <DataGridTextColumn Header="File Name" Binding="{Binding FileName}"
                                             IsReadOnly="True" Width="150"/>
-                        <DataGridTextColumn Header="Type" Binding="{Binding FileType}"
-                                            IsReadOnly="True" Width="100"/>
                         <DataGridTextColumn Header="Date Modified" Binding="{Binding Modified}"
                                             IsReadOnly="True" Width="150"/>
+                        <DataGridTextColumn Header="Type" Binding="{Binding FileType}"
+                                            IsReadOnly="True" Width="100"/>
                         <DataGridTextColumn Header="Size" Binding="{Binding Size}" 
                                             IsReadOnly="True" Width="100"/>
                     </DataGrid.Columns>
                 </DataGrid>
+                <StackPanel Grid.Column="3">
+                    <Button Name="btnOpen" Content="Open" Margin="10, 0, 10, 10" Padding="5" Click="btnOpen_Click"/>
+                    <Button Name="btnRename" Content="Rename" Margin="10, 10, 10, 10" Padding="5" Click="btnRename_Click"/>
+                    <Button Name="btnDelete" Content="Delete" Margin="10, 0, 10, 10" Padding="5" Click="btnDelete_Click"/>
+                    <Button Name="btnCut" Content="Cut" Margin="10, 10, 10, 10" Padding="5" Click="btnCut_Click"/>
+                    <Button Name="btnCopy" Content="Copy" Margin="10, 0, 10, 10" Padding="5" Click="btnCopy_Click"/>
+                    <Button Name="btnPaste" Content="Paste" Margin="10, 0, 10, 10" Padding="5" Click="btnPaste_Click"/>
+                    <Button Name="btnProperties" Content="Properties" Margin="10, 10, 10, 10" Padding="5" Click="btnProperties_Click"/>
+                </StackPanel>
             </Grid>
         </Grid>
     </DockPanel>

@@ -40,18 +40,53 @@ namespace WpfApp1
         }
         private void dgrdFolderViewRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            OpenFolderViewItem();
+        }
+
+        private void OpenFolderViewItem()
+        {
             try
             {
                 FolderViewItemModel item = dgrdFolderView.SelectedItem as FolderViewItemModel;
 
                 if (item != null)
                 {
-                    ViewModelHelper.LoadFolder(_viewModel, item.FilePath);
+                    if (item.IsFolder)
+                    {
+                        ViewModelHelper.LoadFolder(_viewModel, item.FilePath);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Can only open folders right now.");
+                    }
                 }
             }
             catch (Exception)
             {
                 MessageBox.Show("Cannot navigate to directory.");
+                try
+                {
+                    ViewModelHelper.LoadParentFolder(_viewModel);
+                    ScrollToTopOfFolderView();
+                }
+                catch (Exception)
+                {
+
+                }
+            }
+            finally
+            {
+                
+            }
+        }
+
+        private void ScrollToTopOfFolderView()
+        {
+            var topItem = _viewModel.FolderViewItems.FirstOrDefault();
+
+            if (topItem != null)
+            {
+                dgrdFolderView.ScrollIntoView(topItem);
             }
         }
 
@@ -60,6 +95,7 @@ namespace WpfApp1
             try
             {
                 ViewModelHelper.LoadParentFolder(_viewModel);
+                ScrollToTopOfFolderView();
             }
             catch (Exception)
             {
@@ -74,6 +110,45 @@ namespace WpfApp1
 
         private void dgrdFolderView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+        }
+
+        private void ShowFeatureNotImplementedMessageBox()
+        {
+            MessageBox.Show("Feature not yet implemented.");
+        }
+        private void btnOpen_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFolderViewItem();
+        }
+
+        private void btnRename_Click(object sender, RoutedEventArgs e)
+        {
+            ShowFeatureNotImplementedMessageBox();
+        }
+
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            ShowFeatureNotImplementedMessageBox();
+        }
+
+        private void btnCut_Click(object sender, RoutedEventArgs e)
+        {
+            ShowFeatureNotImplementedMessageBox();
+        }
+
+        private void btnCopy_Click(object sender, RoutedEventArgs e)
+        {
+            ShowFeatureNotImplementedMessageBox();
+        }
+
+        private void btnPaste_Click(object sender, RoutedEventArgs e)
+        {
+            ShowFeatureNotImplementedMessageBox();
+        }
+
+        private void btnProperties_Click(object sender, RoutedEventArgs e)
+        {
+            ShowFeatureNotImplementedMessageBox();
         }
     }
 }
