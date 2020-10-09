@@ -167,9 +167,35 @@ namespace WpfApp1
             }
         }
 
+        //Todo: Implement Recycle Bin Storage
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            ShowFeatureNotImplementedMessageBox();
+            if (dgrdFolderView.SelectedItem is FolderViewItemModel item)
+            {
+                var result = MessageBox.Show("Are you sure you want to delete this item? You will not be able to recover it.",
+                    null, MessageBoxButton.YesNo);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        if (item.IsFolder)
+                        {
+                            Directory.Delete(item.FilePath, true);
+                        }
+                        else
+                        {
+                            File.Delete(item.FilePath);
+                        }
+
+                        _viewModel.FolderViewItems.Remove(item);
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Unable to delete item.");
+                    }
+                }
+            }
         }
 
         private void btnCut_Click(object sender, RoutedEventArgs e)

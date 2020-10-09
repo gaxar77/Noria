@@ -15,9 +15,12 @@ namespace WpfApp1
         }
         public static void LoadParentFolder(ViewModel viewModel)
         {
-            string parentDirectory = Directory.GetParent(viewModel.DirectoryPath).FullName;
+            var parentDirectory = Directory.GetParent(viewModel.DirectoryPath);
+            
+            if (parentDirectory == null)
+                return;
 
-            ViewModelHelper.LoadFolder(viewModel, parentDirectory);
+            ViewModelHelper.LoadFolder(viewModel, parentDirectory.FullName);
         }
         private static void LoadFiles(ViewModel viewModel, string directoryPath)
         {
@@ -26,6 +29,13 @@ namespace WpfApp1
 
             foreach (string file in files)
             {
+                var fileInfo = new FileInfo(file);
+                if (fileInfo.Attributes.HasFlag(FileAttributes.System) ||
+                    fileInfo.Attributes.HasFlag(FileAttributes.Hidden))
+                {
+                    continue;
+                }
+
                 var item = new FolderViewItemModel()
                 {
                     FilePath = file,
@@ -49,6 +59,13 @@ namespace WpfApp1
 
             foreach (string subDirectory in subDirectories)
             {
+                var subDirectoryInfo = new DirectoryInfo(subDirectory);
+                if (subDirectoryInfo.Attributes.HasFlag(FileAttributes.System) ||
+                    subDirectoryInfo.Attributes.HasFlag(FileAttributes.Hidden))
+                {
+                    continue;
+                }
+
                 var item = new FolderViewItemModel()
                 {
                     FilePath = subDirectory,
