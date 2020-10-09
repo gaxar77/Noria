@@ -6,13 +6,13 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="Rename Item" Height="250" Width="410" ResizeMode="NoResize" Background="LightBlue">
-    <Grid>
+    <Grid Margin="20">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="260.75"/>
-            <ColumnDefinition Width="39.25"/>
+            <ColumnDefinition Width="260"/>
+            <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Margin="20, 20" Grid.ColumnSpan="2">
+        <StackPanel>
             <TextBlock TextWrapping="Wrap">In order to rename the selected item, please enter the new name to give it."</TextBlock>
             <Grid Margin="0, 20, 0, 20">
                 <Grid.RowDefinitions>
@@ -35,7 +35,7 @@
                      Text="{Binding Path=ItemNewName, Mode=TwoWay}"/>
             </Grid>
         </StackPanel>
-        <StackPanel Grid.Column="2" Margin="10">
+        <StackPanel Grid.Column="2">
             <Button Name="btnOkay" Content="Okay" Background="LightBlue" HorizontalAlignment="Stretch" Padding="5"
                 Click="btnOkay_Click"/>
             <Button Name="btnCancel" Content="Cancel" Background="LightBlue" HorizontalAlignment="Stretch" Padding="5"
