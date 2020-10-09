@@ -129,6 +129,7 @@ namespace WpfApp1
             if (dgrdFolderView.SelectedItem is FolderViewItemModel item)
             {
                 var renameFileDialog = new RenameFileDialog();
+                renameFileDialog.ItemPath = item.FilePath;
                 renameFileDialog.ItemOldName = item.FileName;
                 renameFileDialog.ItemNewName = item.FileName;
 

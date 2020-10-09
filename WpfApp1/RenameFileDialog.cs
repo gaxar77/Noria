@@ -20,6 +20,50 @@ namespace WpfApp1
     /// </summary>
     public partial class RenameFileDialog : Window, INotifyPropertyChanged
     {
+        private string _itemPath;
+        private string _itemNewName;
+        private string _itemOldName;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public bool UserConfirmedRename { get; private set; }
+
+        public string ItemPath
+        {
+            get { return _itemPath; }
+
+            set
+            {
+                _itemPath = value;
+
+                InvokePropertyChanged(nameof(ItemPath));
+            }
+        }
+        public string ItemNewName
+        {
+            get { return _itemNewName; }
+
+            set
+            {
+                _itemNewName = value;
+
+                InvokePropertyChanged(nameof(ItemNewName));
+            }
+        }
+
+        public string ItemOldName
+        {
+            get { return _itemOldName; }
+
+            set
+            {
+                _itemOldName = value;
+
+                InvokePropertyChanged(nameof(ItemOldName));
+            }
+        }
+
+
         public RenameFileDialog()
         {
             InitializeComponent();
@@ -32,35 +76,10 @@ namespace WpfApp1
             Close();
         }
 
-        private string _newName;
-        private string _oldName;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public bool UserConfirmedRename { get; private set; }
-
-        public string ItemNewName
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
-            get { return _newName; }
-
-            set
-            {
-                _newName = value;
-
-                InvokePropertyChanged(nameof(ItemNewName));
-            }
-        }
-
-        public string ItemOldName
-        {
-            get { return _oldName; }
-
-            set
-            {
-                _oldName = value;
-
-                InvokePropertyChanged(nameof(ItemOldName));
-            }
+            UserConfirmedRename = false;
+            Close();
         }
 
         private void InvokePropertyChanged(string propertyName)
@@ -69,5 +88,6 @@ namespace WpfApp1
 
             PropertyChanged?.Invoke(this, args);
         }
+
     }
 }
