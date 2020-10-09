@@ -72,8 +72,15 @@ namespace WpfApp1
 
         private void btnOkay_Click(object sender, RoutedEventArgs e)
         {
-            UserConfirmedRename = true;
-            Close();
+            if (IsFileNameValid(ItemNewName))
+            {
+                UserConfirmedRename = true;
+                Close();
+            }
+            else
+            {
+                MessageBox.Show("The filename you specified is invalid.");
+            }
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
@@ -89,5 +96,19 @@ namespace WpfApp1
             PropertyChanged?.Invoke(this, args);
         }
 
+        //Note: Not a perfect valiadation function.
+        private bool IsFileNameValid(string fileName)
+        {
+            char[] invalidCharacter = { '/', '\\', '*', ':', '"', '|', '?', '<', '>', '\0' };
+            string[] invalidFileNames = { "CON", "RPN", "AUX", "NUL", "COM1", "COM2", "COM3",
+                                          "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "LPT1",
+                                          "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9" };
+
+            var isFileNameInvalid = (invalidCharacter.Any(ch => fileName.Contains(ch)) ||
+                                     invalidFileNames.Any(name => String.Compare(name, fileName, true) == 0)) ||
+                                     fileName.EndsWith(".");
+
+            return !isFileNameInvalid;
+        }
     }
 }
