@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="900">
-    <DockPanel>
-        <Grid Background="LightBlue">
+    <Grid>
+        <Grid Background="LightBlue" HorizontalAlignment="Stretch" >
             <Grid.Resources>
                 <Style TargetType="Button">
                     <Setter Property="Background" Value="Transparent"/>
@@ -37,7 +37,7 @@
                         <Button Name="btnGo" Content="Go" Margin="0, 10, 10, 10" Padding="5" Click="btnGo_Click"/>
                         <Button Name="btnUp" Content="Up" Margin="0, 10, 10, 10" Padding="5" Click="btnUp_Click"/>
                     </StackPanel>
-                    
+
                 </Grid>
             </Border>
             <Grid Grid.Row="1">
@@ -100,5 +100,5 @@
                 </StackPanel>
             </Grid>
         </Grid>
-    </DockPanel>
+    </Grid>
 </Window>

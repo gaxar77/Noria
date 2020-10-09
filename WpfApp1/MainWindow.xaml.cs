@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -122,9 +123,47 @@ namespace WpfApp1
             OpenFolderViewItem();
         }
 
+        //Todo: Refactor
         private void btnRename_Click(object sender, RoutedEventArgs e)
         {
-            ShowFeatureNotImplementedMessageBox();
+            if (dgrdFolderView.SelectedItem is FolderViewItemModel item)
+            {
+                var renameFileDialog = new RenameFileDialog();
+                renameFileDialog.ItemOldName = item.FileName;
+                renameFileDialog.ItemNewName = item.FileName;
+
+                renameFileDialog.ShowDialog();
+
+                if (renameFileDialog.UserConfirmedRename)
+                {
+                    try
+                    {
+                        var parentDir = Path.GetDirectoryName(item.FilePath);
+                        var newItemPath = Path.Combine(parentDir, renameFileDialog.ItemNewName);
+                        if (item.IsFolder)
+                        {
+                            Directory.Move(item.FilePath, newItemPath);
+                        }
+                        else
+                        {
+                            File.Move(item.FilePath, newItemPath);
+                        }
+
+                        try
+                        {
+                            ViewModelHelper.LoadFolder(_viewModel, _viewModel.DirectoryPath);
+                        }
+                        catch (Exception)
+                        {
+                            MessageBox.Show("Unable to refresh view.");
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Unable to rename item.");
+                    }
+                }
+            }
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
