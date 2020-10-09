@@ -63,7 +63,8 @@
                           SelectionMode="Single"
                           CanUserResizeRows="False"
                           RowHeaderWidth="0"
-                          SelectionChanged="dgrdFolderView_SelectionChanged">
+                          SelectionChanged="dgrdFolderView_SelectionChanged"
+                          Background="White">
                     <DataGrid.Resources>
                         <Style TargetType="DataGridRow">
                             <EventSetter Event="MouseDoubleClick" Handler="dgrdFolderViewRow_MouseDoubleClick"/>
