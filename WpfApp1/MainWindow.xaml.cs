@@ -140,6 +140,8 @@ namespace WpfApp1
                         {
                             File.Move(item.ItemPath, newItemPath);
                         }
+
+                        item.Load();
                     }
                     catch (Exception)
                     {
@@ -172,7 +174,7 @@ namespace WpfApp1
                             File.Delete(item.ItemPath);
                         }
 
-                        _viewModel.TryRefresh();
+                        _viewModel.Folder.Items.Remove(item);
                     }
                     catch (Exception)
                     {
@@ -236,6 +238,16 @@ namespace WpfApp1
         private void dirPathBreadCrumb_MainPanelMouseDown(object sender, EventArgs e)
         {
             dirPathBreadCrumb.Visibility = Visibility.Collapsed;
+        }
+
+        private void btnNewFolder_Click(object sender, RoutedEventArgs e)
+        {
+            ShowFeatureNotImplementedMessageBox();
+        }
+
+        private void btnNewFile_Click(object sender, RoutedEventArgs e)
+        {
+            ShowFeatureNotImplementedMessageBox();
         }
     }
 }
