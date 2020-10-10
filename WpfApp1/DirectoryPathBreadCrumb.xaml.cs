@@ -14,12 +14,13 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using Shapes = System.Windows.Shapes;
 using System.IO;
+using System.CodeDom;
 
 namespace WpfApp1
 {
     //Todo: Add SubFolder Drop Downs
     //Todo: Add Horizontal Scrolling
-    //Todo: Change properties to dependency properties.
+    //Todo: Change events to dependency events.
 
     /// <summary>
     /// Interaction logic for DirectoryPathBreadCrumb.xaml
@@ -31,25 +32,32 @@ namespace WpfApp1
             InitializeComponent();
         }
 
-        private string _directoryPath;
+        public static readonly DependencyProperty DirectoryPathProperty =
+            DependencyProperty.Register("DirectoryPath", typeof(string),
+                typeof(DirectoryPathBreadCrumb),
+                new PropertyMetadata("", OnDirectoryPathChanged));
 
         public string DirectoryPath
         {
             get 
             { 
-                return _directoryPath; 
+                return (string)GetValue(DirectoryPathProperty);
             }
 
             set
             {
-                _directoryPath = value;
-
-                _pathComponents = GetPathComponents(DirectoryPath);
-
-                CreateBreadCrumbButtons();
-
-                InvokePropertyChanged(nameof(DirectoryPath));
+                SetValue(DirectoryPathProperty, value);
             }
+        }
+
+        private static void OnDirectoryPathChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        {
+            ((DirectoryPathBreadCrumb)obj).OnDirectoryPathChanged(e);
+        }
+
+        private void OnDirectoryPathChanged(DependencyPropertyChangedEventArgs e)
+        {
+            CreateBreadCrumbButtons();
         }
 
         public event EventHandler<BreadCrumbPathSelected> BreadCrumbPathSelected;
@@ -68,6 +76,7 @@ namespace WpfApp1
         public void CreateBreadCrumbButtons()
         {
             mainPanel.Children.Clear();
+            _pathComponents = GetPathComponents(DirectoryPath);
 
             foreach (BreadCrumbPathComponent pathComponent in _pathComponents)
             {

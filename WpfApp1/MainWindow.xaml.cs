@@ -2,12 +2,14 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using Shapes = System.Windows.Shapes;
@@ -19,6 +21,14 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
+        enum OpenFolderFailureAction
+        {
+            ReverseNavigation,
+            //ReverseNavigationShowErrorOnFailure,
+            //ShowError,
+            None
+        }
+
         ViewModel _viewModel = new ViewModel();
 
         public MainWindow()
@@ -28,62 +38,54 @@ namespace WpfApp1
             DataContext = _viewModel;
 
             ViewModelHelper.LoadFolder(_viewModel, @"C:\");
-            dirPathBreadCrumb.DirectoryPath = @"C:\";
-        }
-
-        private void OpenFolderAtSpecifiedPath()
-        {
-            try
-            {
-                ViewModelHelper.LoadFolder(_viewModel, txtPath.Text);
-                dirPathBreadCrumb.DirectoryPath = _viewModel.DirectoryPath;
-                ScrollToTopOfFolderView();
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Cannot navigate to directory.");
-            }
         }
         private void dgrdFolderViewRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+
             OpenFolderViewItem();
+        }
+
+        private bool TryOpenFolder(string directoryPath, bool scrollToTopOnSuccess, OpenFolderFailureAction failureAction)
+        {
+            string oldDirectoryPath = _viewModel.DirectoryPath;
+            try
+            {
+                ViewModelHelper.LoadFolder(_viewModel, directoryPath);
+                if (scrollToTopOnSuccess)
+                    ScrollToTopOfFolderView();
+            }
+            catch(Exception)
+            {
+                switch(failureAction)
+                {
+                    case OpenFolderFailureAction.ReverseNavigation:
+                            TryOpenFolder(oldDirectoryPath, false, OpenFolderFailureAction.None);
+                        break;
+                }
+
+                return false;
+            }
+
+            return true;
         }
 
         private void OpenFolderViewItem()
         {
-            try
-            {
-                FolderViewItemModel item = dgrdFolderView.SelectedItem as FolderViewItemModel;
+            FolderViewItemModel item = dgrdFolderView.SelectedItem as FolderViewItemModel;
 
-                if (item != null)
+            if (item != null)
+            {
+                if (item.IsFolder)
                 {
-                    if (item.IsFolder)
+                    if (!TryOpenFolder(item.FilePath, true, OpenFolderFailureAction.ReverseNavigation))
                     {
-                        ViewModelHelper.LoadFolder(_viewModel, item.FilePath);
-                        dirPathBreadCrumb.DirectoryPath = _viewModel.DirectoryPath;
-                    }
-                    else
-                    {
-                        Process.Start(item.FilePath);
+                        MessageBox.Show($"Unable to open folder \"{item.FilePath}\"");
                     }
                 }
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Cannot navigate to directory.");
-                try
+                else
                 {
-                    ViewModelHelper.LoadParentFolder(_viewModel);
-                    ScrollToTopOfFolderView();
+                    Process.Start(item.FilePath);
                 }
-                catch (Exception)
-                {
-
-                }
-            }
-            finally
-            {
-
             }
         }
 
@@ -99,16 +101,11 @@ namespace WpfApp1
 
         private void btnUp_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                ViewModelHelper.LoadParentFolder(_viewModel);
+            var parentDirectory = Directory.GetParent(_viewModel.DirectoryPath);
 
-                dirPathBreadCrumb.DirectoryPath = _viewModel.DirectoryPath;
-                ScrollToTopOfFolderView();
-            }
-            catch (Exception)
+            if (parentDirectory != null)
             {
-                MessageBox.Show("Cannot navigate to directory.");
+                TryOpenFolder(parentDirectory.FullName, true, OpenFolderFailureAction.None);
             }
         }
 
@@ -235,7 +232,7 @@ namespace WpfApp1
         {
             if (e.Key == Key.Enter)
             {
-                OpenFolderAtSpecifiedPath();
+                TryOpenFolder(txtPath.Text, true, OpenFolderFailureAction.ReverseNavigation);
 
                 dgrdFolderView.Focus();
             }
@@ -253,8 +250,7 @@ namespace WpfApp1
 
         private void DirectoryPathBreadCrumb_BreadCrumbPathSelected(object sender, BreadCrumbPathSelected e)
         {
-            _viewModel.DirectoryPath = e.PathComponent.DirectoryPath;
-            OpenFolderAtSpecifiedPath();
+            TryOpenFolder(e.PathComponent.DirectoryPath, true, OpenFolderFailureAction.None);
         }
 
         private void dirPathBreadCrumb_MainPanelMouseDown(object sender, EventArgs e)

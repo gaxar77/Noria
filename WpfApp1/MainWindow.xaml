@@ -45,7 +45,8 @@
                              KeyDown="txtPath_KeyDown"/>
                         <local:DirectoryPathBreadCrumb x:Name="dirPathBreadCrumb" Margin="10" 
                                                        BreadCrumbPathSelected="DirectoryPathBreadCrumb_BreadCrumbPathSelected"
-                                                       MainPanelMouseDown="dirPathBreadCrumb_MainPanelMouseDown"/>
+                                                       MainPanelMouseDown="dirPathBreadCrumb_MainPanelMouseDown"
+                                                       DirectoryPath="{Binding Path=DirectoryPath}"/>
                     </Grid>
                 </Grid>
             </Border>
