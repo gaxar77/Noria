@@ -1,9 +1,10 @@
-﻿<Window x:Class="WpfApp1.MainWindow"
+﻿<Window x:Class="Noria.UI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfApp1"
+        xmlns:local="clr-namespace:Noria"
+        xmlns:localUI="clr-namespace:Noria.UI"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="900" Background="LightBlue">
     <Grid Background="LightBlue" HorizontalAlignment="Stretch" Margin="10" >
@@ -42,7 +43,7 @@
                              Text="{Binding Path=DirectoryPath, Mode=OneWay}"
                              LostFocus="txtPath_LostFocus"
                              KeyDown="txtPath_KeyDown"/>
-                <local:DirectoryPathBreadCrumb x:Name="dirPathBreadCrumb" Margin="5, 0, 0, 0" 
+                <localUI:DirectoryPathBreadCrumb x:Name="dirPathBreadCrumb" Margin="5, 0, 0, 0" 
                                                        BreadCrumbPathSelected="DirectoryPathBreadCrumb_BreadCrumbPathSelected"
                                                        MainPanelMouseDown="dirPathBreadCrumb_MainPanelMouseDown"
                                                        DirectoryPath="{Binding Path=DirectoryPath}"/>
@@ -86,7 +87,7 @@
                     <Style TargetType="DataGridRow">
                         <EventSetter Event="MouseDoubleClick" Handler="dgrdFolderViewRow_MouseDoubleClick"/>
                     </Style>
-                    <local:FileTypeToIconConverter x:Key="foiConverter"/>
+                    <localUI:FileTypeToIconConverter x:Key="foiConverter"/>
                 </DataGrid.Resources>
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="" IsReadOnly="True">

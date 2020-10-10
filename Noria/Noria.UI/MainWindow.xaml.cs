@@ -15,8 +15,9 @@ using System.Windows.Markup;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using Shapes = System.Windows.Shapes;
+using Noria.ViewModel;
 
-namespace WpfApp1
+namespace Noria.UI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -45,7 +46,7 @@ namespace WpfApp1
 
         private void _viewModel_Navigated(object sender, FolderViewModelNavigationEventArgs e)
         {
-            if (e.NewFolder is InaccessableImmutableFolder)
+            if (e.NewFolder is InaccessibleFolderModel)
             {
                 MessageBox.Show("Unable to access this folder.");
             }

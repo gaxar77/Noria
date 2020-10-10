@@ -16,7 +16,7 @@ using Shapes = System.Windows.Shapes;
 using System.IO;
 using System.CodeDom;
 
-namespace WpfApp1
+namespace Noria.UI
 {
     //Todo: Add SubFolder Drop Downs
     //Todo: Add Horizontal Scrolling

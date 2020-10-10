@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.IO.Packaging;
 using System.IO;
 
-namespace WpfApp1
+namespace Noria
 {
     /// <summary>
     /// Interaction logic for App.xaml

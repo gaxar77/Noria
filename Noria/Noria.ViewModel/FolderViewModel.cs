@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace WpfApp1
+namespace Noria.ViewModel
 {
     public class FolderViewModel : INotifyPropertyChanged
     {
@@ -18,7 +18,7 @@ namespace WpfApp1
 
         public FolderModel Folder
         {
-            get { return _folder;  }
+            get { return _folder; }
 
             set
             {
@@ -130,11 +130,5 @@ namespace WpfApp1
 
             return TryNavigate(nextFolder.FolderPath, false, false);
         }
-    }
-
-    public enum ImmutableFolderItemType
-    {
-        File,
-        Folder
     }
 }

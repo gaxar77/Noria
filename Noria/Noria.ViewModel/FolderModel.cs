@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Noria.UI;
+using Noria.Files;
 
-namespace WpfApp1
+namespace Noria.ViewModel
 {
     public class FolderModel : INotifyPropertyChanged
     {
@@ -60,7 +62,7 @@ namespace WpfApp1
             }
             catch (UnauthorizedAccessException)
             {
-                return new InaccessableImmutableFolder()
+                return new InaccessibleFolderModel()
                 {
                     FolderPath = folderPath
                 };

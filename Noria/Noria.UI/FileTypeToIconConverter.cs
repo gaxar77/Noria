@@ -3,7 +3,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Globalization;
 
-namespace WpfApp1
+namespace Noria.UI
 {
     public class FileTypeToIconConverter : IValueConverter
     {

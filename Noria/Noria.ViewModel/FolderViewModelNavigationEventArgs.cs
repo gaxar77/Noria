@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WpfApp1
+namespace Noria.ViewModel
 {
     public class FolderViewModelNavigationEventArgs : EventArgs
     {
