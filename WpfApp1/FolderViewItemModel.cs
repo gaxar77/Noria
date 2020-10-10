@@ -3,10 +3,11 @@ using System.ComponentModel;
 
 namespace WpfApp1
 {
+    [Obsolete]
     public class FolderViewItemModel : INotifyPropertyChanged
     {
-        private string _fileName;
-        private string _filePath;
+        private string __itemName;
+        private string _itemPath;
         private string _fileType;
         private DateTime _modified;
         private DateTime _created;
@@ -14,26 +15,26 @@ namespace WpfApp1
         private long? _size;
         private bool _isFolder;
 
-        public string FilePath
+        public string ItemPath
         {
-            get { return _filePath; }
+            get { return _itemPath; }
 
             set
             {
-                _filePath = value;
+                _itemPath = value;
 
-                OnPropertyChanged(nameof(FilePath));
+                OnPropertyChanged(nameof(ItemPath));
             }
         }
-        public string FileName
+        public string ItemName
         {
-            get { return _fileName; }
+            get { return __itemName; }
 
             set
             {
-                _fileName = value;
+                __itemName = value;
 
-                OnPropertyChanged(nameof(FileName));
+                OnPropertyChanged(nameof(ItemName));
             }
         }
 

@@ -2,6 +2,7 @@
 
 namespace WpfApp1
 {
+    /*
     public class ViewModelHelper
     {
         public static void LoadFolder(ViewModel viewModel, string directoryPath)
@@ -38,8 +39,8 @@ namespace WpfApp1
 
                 var item = new FolderViewItemModel()
                 {
-                    FilePath = file,
-                    FileName = Path.GetFileName(file),
+                    ItemPath = file,
+                    ItemName = Path.GetFileName(file),
                     Created = File.GetCreationTime(file),
                     Modified = File.GetLastWriteTime(file),
                     LastAccessed = File.GetLastAccessTime(file),
@@ -68,8 +69,8 @@ namespace WpfApp1
 
                 var item = new FolderViewItemModel()
                 {
-                    FilePath = subDirectory,
-                    FileName = Path.GetFileName(subDirectory),
+                    ItemPath = subDirectory,
+                    ItemName = Path.GetFileName(subDirectory),
                     Created = Directory.GetCreationTime(subDirectory),
                     Modified = Directory.GetLastWriteTime(subDirectory),
                     LastAccessed = Directory.GetLastAccessTime(subDirectory),
@@ -81,4 +82,5 @@ namespace WpfApp1
             }
         }
     }
+    */
 }
