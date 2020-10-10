@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Noria"
         xmlns:localUI="clr-namespace:Noria.UI"
+        xmlns:localVM="clr-namespace:Noria.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="900" Background="LightBlue">
     <Grid Background="LightBlue" HorizontalAlignment="Stretch" Margin="10" >
@@ -68,7 +69,21 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
-            <TreeView Grid.Column="0"/>
+            <TreeView Name="trvFolderTree" Grid.Column="0">
+                <TreeView.Resources>
+                    <Style TargetType="TreeViewItem">
+                        <EventSetter Event="Expanded" Handler="trvFolderTree_Item_Expanded"/>
+                        <EventSetter Event="Selected" Handler="trvFolderTree_Item_Selected"/>
+                    </Style>
+
+                    <HierarchicalDataTemplate DataType="{x:Type localVM:FolderTreeItemModel}" ItemsSource="{Binding SubFolders}">
+                        <TextBlock Text="{Binding Path=FolderName}"/>
+                    </HierarchicalDataTemplate>
+                    <!--<DataTemplate DataType="self:FolderTreeItemModel">
+                        <TextBlock Text="{Binding Path=FolderName}"/>
+                    </DataTemplate>!-->
+                </TreeView.Resources>
+            </TreeView>
             <GridSplitter Grid.Column="1" Width="10" 
                               HorizontalAlignment="Stretch"
                               ResizeBehavior="PreviousAndNext" 

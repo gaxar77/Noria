@@ -19,27 +19,26 @@ using Noria.ViewModel;
 
 namespace Noria.UI
 {
+    //Todo: Move ViewModel and FolderTreeViewModel into one ViewModel class.
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        enum OpenFolderFailureAction
-        {
-            ReverseNavigation,
-            //ReverseNavigationShowErrorOnFailure,
-            //ShowError,
-            None
-        }
-
         FolderViewModel _viewModel = new FolderViewModel();
+        FolderTreeViewModel _folderTreeViewModel = new FolderTreeViewModel();
 
         public MainWindow()
         {
             InitializeComponent();
 
             DataContext = _viewModel;
+
             _viewModel.Navigated += _viewModel_Navigated;
+
+            _folderTreeViewModel.RootFolders.Add(new FolderTreeItemModel(@"C:\"));
+
+            trvFolderTree.ItemsSource = _folderTreeViewModel.RootFolders;
 
             _viewModel.DirectoryPath = @"C:\";
         }
@@ -100,6 +99,7 @@ namespace Noria.UI
 
         private void dgrdFolderView_GotFocus(object sender, RoutedEventArgs e)
         {
+            dirPathBreadCrumb.Visibility = Visibility.Visible;
         }
 
         private void dgrdFolderView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -249,6 +249,28 @@ namespace Noria.UI
         private void btnNewFile_Click(object sender, RoutedEventArgs e)
         {
             ShowFeatureNotImplementedMessageBox();
+        }
+
+        private void trvFolderTree_Item_Expanded(object sender, RoutedEventArgs e)
+        {
+            var item = (TreeViewItem)sender;
+
+            var folderTreeItem = (FolderTreeItemModel)item.Header;
+
+            folderTreeItem.LoadSubFolders();
+
+            e.Handled = true;
+        }
+
+        private void trvFolderTree_Item_Selected(object sender, RoutedEventArgs e)
+        {
+            var item = (TreeViewItem)sender;
+
+            var folderTreeItem = (FolderTreeItemModel)item.Header;
+
+            _viewModel.DirectoryPath = folderTreeItem.FolderPath;
+
+            e.Handled = true;
         }
     }
 }
