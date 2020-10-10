@@ -88,34 +88,15 @@ namespace Noria.ViewModel
 
             try
             {
-                //var subFoldersLoaded = new List<FolderTreeItemModel>();
-
                 var subFolderPaths = Directory.GetDirectories(FolderPath);
 
                 foreach (string subFolderPath in subFolderPaths)
                 {
                     var subFolder = new FolderTreeItemModel(subFolderPath);
 
-                    //if (!SubFolders.Any(f => f.FolderName == subFolder.FolderName))
-                    //{
-                        SubFolders.Add(subFolder);
-                    //}
-
-                    //subFoldersLoaded.Add(subFolder);
+                    SubFolders.Add(subFolder);
                 }
 
-                /*
-                var subFoldersToRemove = new List<FolderTreeItemModel>();
-                foreach (FolderTreeItemModel subFolder in SubFolders)
-                {
-                    if (!subFoldersLoaded.Any(f => f.FolderName == subFolder.FolderName))
-                    {
-                        subFoldersToRemove.Add(subFolder);
-                    }
-                }
-
-                subFoldersToRemove.ForEach(f => SubFolders.Remove(f));
-                */
                 return true;
             }
             catch (Exception)
