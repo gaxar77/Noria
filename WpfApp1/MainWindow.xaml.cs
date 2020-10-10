@@ -42,7 +42,7 @@ namespace WpfApp1
         private void dgrdFolderViewRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
 
-            OpenFolderViewItem();
+            OpenSelectedFolderViewItem();
         }
 
         private bool TryOpenFolder(string directoryPath, bool scrollToTopOnSuccess, OpenFolderFailureAction failureAction)
@@ -69,7 +69,7 @@ namespace WpfApp1
             return true;
         }
 
-        private void OpenFolderViewItem()
+        private void OpenSelectedFolderViewItem()
         {
             FolderViewItemModel item = dgrdFolderView.SelectedItem as FolderViewItemModel;
 
@@ -77,7 +77,7 @@ namespace WpfApp1
             {
                 if (item.IsFolder)
                 {
-                    if (!TryOpenFolder(item.FilePath, true, OpenFolderFailureAction.ReverseNavigation))
+                    if (!TryOpenFolder(item.FilePath, false, OpenFolderFailureAction.ReverseNavigation))
                     {
                         MessageBox.Show($"Unable to open folder \"{item.FilePath}\"");
                     }
@@ -123,7 +123,7 @@ namespace WpfApp1
         }
         private void btnOpen_Click(object sender, RoutedEventArgs e)
         {
-            OpenFolderViewItem();
+            OpenSelectedFolderViewItem();
         }
 
         //Todo: Refactor
