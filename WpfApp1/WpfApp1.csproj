@@ -58,9 +58,11 @@
     <Compile Include="DirectoryPathBreadCrumb.xaml.cs">
       <DependentUpon>DirectoryPathBreadCrumb.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FolderViewItemModel.cs" />
-    <Compile Include="ViewModel.cs" />
-    <Compile Include="ViewModelHelper.cs" />
+    <Compile Include="FolderViewModel.cs" />
+    <Compile Include="FolderViewModelNavigationEventArgs.cs" />
+    <Compile Include="ImmutableFolder.cs" />
+    <Compile Include="ImmutableFolderItem.cs" />
+    <Compile Include="InaccessableImmutableFolder.cs" />
     <Compile Include="RenameFileDialog.cs">
       <DependentUpon>RenameFileDialog.xaml</DependentUpon>
     </Compile>
@@ -78,7 +80,7 @@
     </Compile>
     <Compile Include="FileTypeUtility.cs" />
     <Compile Include="FileUtility.cs" />
-    <Compile Include="IsFolderToIconConverter.cs" />
+    <Compile Include="ItemTypeToIconConverter.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

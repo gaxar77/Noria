@@ -79,13 +79,13 @@
                         <Style TargetType="DataGridRow">
                             <EventSetter Event="MouseDoubleClick" Handler="dgrdFolderViewRow_MouseDoubleClick"/>
                         </Style>
-                        <local:IsFolderToIconConverter x:Key="foiConverter"/>
+                        <local:ItemTypeToIconConverter x:Key="foiConverter"/>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Header="" IsReadOnly="True">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Rectangle Fill="{Binding Path=IsFolder, Converter={StaticResource foiConverter}, Mode=OneWay}"
+                                    <Rectangle Fill="{Binding Path=ItemType, Converter={StaticResource foiConverter}, Mode=OneWay}"
                                                Width="32" Height="32"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>

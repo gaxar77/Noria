@@ -31,14 +31,28 @@ namespace WpfApp1
             None
         }
 
-        ViewModel _viewModel = new ViewModel();
+        FolderViewModel _viewModel = new FolderViewModel();
 
         public MainWindow()
         {
             InitializeComponent();
 
             DataContext = _viewModel;
+            _viewModel.Navigated += _viewModel_Navigated;
+
+            _viewModel.DirectoryPath = @"C:\";
         }
+
+        private void _viewModel_Navigated(object sender, FolderViewModelNavigationEventArgs e)
+        {
+            if (e.NewFolder is InaccessableImmutableFolder)
+            {
+                MessageBox.Show("Unable to access this folder.");
+            }
+
+            ScrollToTopOfFolderView();
+        }
+
         private void dgrdFolderViewRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             OpenSelectedFolderViewItem();
@@ -103,7 +117,7 @@ namespace WpfApp1
         //Todo: Refactor
         private void btnRename_Click(object sender, RoutedEventArgs e)
         {
-            if (dgrdFolderView.SelectedItem is FolderViewItemModel item)
+            if (dgrdFolderView.SelectedItem is ImmutableFolderItem item)
             {
                 var renameFileDialog = new RenameFileDialog();
                 renameFileDialog.ItemPath = item.ItemPath;
@@ -118,7 +132,7 @@ namespace WpfApp1
                     {
                         var parentDir = Path.GetDirectoryName(item.ItemPath);
                         var newItemPath = Path.Combine(parentDir, renameFileDialog.ItemNewName);
-                        if (item.IsFolder)
+                        if (item.ItemType == ImmutableFolderItemType.Folder)
                         {
                             Directory.Move(item.ItemPath, newItemPath);
                         }
@@ -158,7 +172,7 @@ namespace WpfApp1
                             File.Delete(item.ItemPath);
                         }
 
-                        _viewModel.DirectoryPath = _viewModel.DirectoryPath;
+                        _viewModel.TryRefresh();
                     }
                     catch (Exception)
                     {
