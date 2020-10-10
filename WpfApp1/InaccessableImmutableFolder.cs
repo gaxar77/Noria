@@ -1,6 +1,6 @@
 ﻿namespace WpfApp1
 {
-    public class InaccessableImmutableFolder : ImmutableFolder
+    public class InaccessableImmutableFolder : FolderModel
     {
     }
 }

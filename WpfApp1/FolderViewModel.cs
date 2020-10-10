@@ -8,15 +8,15 @@ namespace WpfApp1
     public class FolderViewModel : INotifyPropertyChanged
     {
         private string _directoryPath;
-        private ImmutableFolder _folder;
+        private FolderModel _folder;
 
-        private Stack<ImmutableFolder> _prevFolders
-            = new Stack<ImmutableFolder>();
+        private Stack<FolderModel> _prevFolders
+            = new Stack<FolderModel>();
 
-        private Stack<ImmutableFolder> _nextFolders
-            = new Stack<ImmutableFolder>();
+        private Stack<FolderModel> _nextFolders
+            = new Stack<FolderModel>();
 
-        public ImmutableFolder Folder
+        public FolderModel Folder
         {
             get { return _folder;  }
 
@@ -56,7 +56,7 @@ namespace WpfApp1
             PropertyChanged?.Invoke(this, args);
         }
 
-        private void OnNavigated(ImmutableFolder prevFolder, ImmutableFolder newFolder)
+        private void OnNavigated(FolderModel prevFolder, FolderModel newFolder)
         {
             var args = new FolderViewModelNavigationEventArgs(prevFolder, newFolder);
 
@@ -67,7 +67,7 @@ namespace WpfApp1
         {
             try
             {
-                Folder = ImmutableFolder.CreateFolder(DirectoryPath);
+                Folder = FolderModel.CreateFolder(DirectoryPath);
                 return true;
             }
             catch (Exception)
@@ -89,7 +89,7 @@ namespace WpfApp1
 
             try
             {
-                Folder = ImmutableFolder.CreateFolder(folderPath);
+                Folder = FolderModel.CreateFolder(folderPath);
 
                 _directoryPath = Folder.FolderPath;
                 OnPropertyChanged(nameof(DirectoryPath));

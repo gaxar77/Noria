@@ -61,11 +61,11 @@ namespace WpfApp1
 
         private void OpenSelectedFolderViewItem()
         {
-            ImmutableFolderItem item = dgrdFolderView.SelectedItem as ImmutableFolderItem;
+            FolderItemModel item = dgrdFolderView.SelectedItem as FolderItemModel;
 
             if (item != null)
             {
-                if (item.ItemType == ImmutableFolderItemType.Folder)
+                if (item is FolderFolderItemModel)
                 {
                     _viewModel.DirectoryPath = item.ItemPath;
                 }
@@ -117,7 +117,7 @@ namespace WpfApp1
         //Todo: Refactor
         private void btnRename_Click(object sender, RoutedEventArgs e)
         {
-            if (dgrdFolderView.SelectedItem is ImmutableFolderItem item)
+            if (dgrdFolderView.SelectedItem is FolderItemModel item)
             {
                 var renameFileDialog = new RenameFileDialog();
                 renameFileDialog.ItemPath = item.ItemPath;
@@ -132,7 +132,7 @@ namespace WpfApp1
                     {
                         var parentDir = Path.GetDirectoryName(item.ItemPath);
                         var newItemPath = Path.Combine(parentDir, renameFileDialog.ItemNewName);
-                        if (item.ItemType == ImmutableFolderItemType.Folder)
+                        if (item is FolderFolderItemModel)
                         {
                             Directory.Move(item.ItemPath, newItemPath);
                         }
@@ -154,7 +154,7 @@ namespace WpfApp1
         //Todo: Implement Recycle Bin Storage
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            if (dgrdFolderView.SelectedItem is ImmutableFolderItem item)
+            if (dgrdFolderView.SelectedItem is FolderItemModel item)
             {
                 var result = MessageBox.Show("Are you sure you want to delete this item? You will not be able to recover it.",
                     null, MessageBoxButton.YesNo);
@@ -163,7 +163,7 @@ namespace WpfApp1
                 {
                     try
                     {
-                        if (item.ItemType == ImmutableFolderItemType.Folder)
+                        if (item is FolderFolderItemModel)
                         {
                             Directory.Delete(item.ItemPath, true);
                         }

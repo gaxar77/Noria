@@ -14,6 +14,11 @@ namespace WpfApp1
 
         }
 
+        public void Reset()
+        {
+            _fileTypes.Clear();
+        }
+
         public string GetFileType(string fileName)
         {
             var extension = Path.GetExtension(fileName);

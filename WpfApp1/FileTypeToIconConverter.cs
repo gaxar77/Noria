@@ -5,11 +5,11 @@ using System.Globalization;
 
 namespace WpfApp1
 {
-    public class ItemTypeToIconConverter : IValueConverter
+    public class FileTypeToIconConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (ImmutableFolderItemType)value == ImmutableFolderItemType.Folder
+            return (string)value == "Folder"
                 ? Brushes.Yellow
                 : Brushes.Blue;
         }
