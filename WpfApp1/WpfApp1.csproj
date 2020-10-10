@@ -55,12 +55,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DirectoryPathBreadCrumb.xaml.cs">
+      <DependentUpon>DirectoryPathBreadCrumb.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FolderViewItemModel.cs" />
     <Compile Include="ViewModel.cs" />
     <Compile Include="ViewModelHelper.cs" />
     <Compile Include="RenameFileDialog.cs">
       <DependentUpon>RenameFileDialog.xaml</DependentUpon>
     </Compile>
+    <Page Include="DirectoryPathBreadCrumb.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -79,6 +86,10 @@
     <Page Include="RenameFileDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

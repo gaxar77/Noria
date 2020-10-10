@@ -28,12 +28,16 @@ namespace WpfApp1
             DataContext = _viewModel;
 
             ViewModelHelper.LoadFolder(_viewModel, @"C:\");
+            dirPathBreadCrumb.DirectoryPath = @"C:\";
         }
-        private void btnGo_Click(object sender, RoutedEventArgs e)
+
+        private void OpenFolderAtSpecifiedPath()
         {
             try
             {
                 ViewModelHelper.LoadFolder(_viewModel, txtPath.Text);
+                dirPathBreadCrumb.DirectoryPath = _viewModel.DirectoryPath;
+                ScrollToTopOfFolderView();
             }
             catch (Exception)
             {
@@ -56,6 +60,7 @@ namespace WpfApp1
                     if (item.IsFolder)
                     {
                         ViewModelHelper.LoadFolder(_viewModel, item.FilePath);
+                        dirPathBreadCrumb.DirectoryPath = _viewModel.DirectoryPath;
                     }
                     else
                     {
@@ -97,6 +102,8 @@ namespace WpfApp1
             try
             {
                 ViewModelHelper.LoadParentFolder(_viewModel);
+
+                dirPathBreadCrumb.DirectoryPath = _viewModel.DirectoryPath;
                 ScrollToTopOfFolderView();
             }
             catch (Exception)
@@ -107,7 +114,6 @@ namespace WpfApp1
 
         private void dgrdFolderView_GotFocus(object sender, RoutedEventArgs e)
         {
-            txtPath.InvalidateProperty(TextBox.TextProperty);
         }
 
         private void dgrdFolderView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -216,6 +222,44 @@ namespace WpfApp1
         private void btnProperties_Click(object sender, RoutedEventArgs e)
         {
             ShowFeatureNotImplementedMessageBox();
+        }
+
+        //Todo: Add Path validation
+        private void txtPath_LostFocus(object sender, RoutedEventArgs e)
+        {
+            txtPath.InvalidateProperty(TextBox.TextProperty);
+            dirPathBreadCrumb.Visibility = Visibility.Visible;
+        }
+
+        private void txtPath_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                OpenFolderAtSpecifiedPath();
+
+                dgrdFolderView.Focus();
+            }
+        }
+
+        private void btnBack_Click(object sender, RoutedEventArgs e)
+        {
+            ShowFeatureNotImplementedMessageBox();
+        }
+
+        private void btnForward_Click(object sender, RoutedEventArgs e)
+        {
+            ShowFeatureNotImplementedMessageBox();
+        }
+
+        private void DirectoryPathBreadCrumb_BreadCrumbPathSelected(object sender, BreadCrumbPathSelected e)
+        {
+            _viewModel.DirectoryPath = e.PathComponent.DirectoryPath;
+            OpenFolderAtSpecifiedPath();
+        }
+
+        private void dirPathBreadCrumb_MainPanelMouseDown(object sender, EventArgs e)
+        {
+            dirPathBreadCrumb.Visibility = Visibility.Collapsed;
         }
     }
 }
