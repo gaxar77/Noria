@@ -60,6 +60,7 @@
     </Compile>
     <Compile Include="Noria.ViewModel\FileFolderItemModel.cs" />
     <Compile Include="Noria.ViewModel\FolderFolderItemModel.cs" />
+    <Compile Include="Noria.ViewModel\FolderTreeItemModel.cs" />
     <Compile Include="Noria.ViewModel\FolderTreeViewModel.cs" />
     <Compile Include="Noria.ViewModel\FolderViewModel.cs" />
     <Compile Include="Noria.ViewModel\FolderViewModelNavigationEventArgs.cs" />
