@@ -1,4 +1,5 @@
 Noria
 ===
 
-This is a file manager application, having only the most basic features, and even many of them not yet implemented, which I intend to grow into a large application like the Windows File Explorer.
+This is a file manager application, having only the most basic features, many of which are not yet implemented.
+I intend to grow it into a large application like the Windows File Explorer.
