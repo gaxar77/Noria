@@ -13,11 +13,11 @@ namespace Noria.ViewModel
         private string _directoryPath;
         private FolderModel _folder;
 
-        private Stack<FolderModel> _prevFolders
-            = new Stack<FolderModel>();
+        private List<FolderModel> _prevFolders
+            = new List<FolderModel>();
 
-        private Stack<FolderModel> _nextFolders
-            = new Stack<FolderModel>();
+        private List<FolderModel> _nextFolders
+            = new List<FolderModel>();
 
         public FolderModel Folder
         {
@@ -83,7 +83,7 @@ namespace Noria.ViewModel
         {
             var prevFolder = Folder;
             if (!suppressSavingInHistory)
-                _prevFolders.Push(Folder);
+                _prevFolders.Add(Folder);
 
             if (clearNextFolders)
                 _nextFolders.Clear();
@@ -117,12 +117,13 @@ namespace Noria.ViewModel
                 if (_prevFolders.Count == 0)
                     return true;
 
-                var prevFolder = _prevFolders.Pop();
+                var prevFolder = _prevFolders.Last();
+                _prevFolders.Remove(prevFolder);
 
                 if (prevFolder == null)
                     return true;
 
-                _nextFolders.Push(Folder);
+                _nextFolders.Add(Folder);
 
                 return TryNavigate(prevFolder.FolderPath, true, false);
             }
@@ -138,7 +139,8 @@ namespace Noria.ViewModel
             if (_nextFolders.Count == 0)
                 return true;
 
-            var nextFolder = _nextFolders.Pop();
+            var nextFolder = _nextFolders.Last();
+            _nextFolders.Remove(nextFolder);
 
             if (nextFolder == null)
                 return true;
@@ -149,23 +151,13 @@ namespace Noria.ViewModel
         public void LimitPrevFoldersStack()
         {
             if (_prevFolders.Count > 20)
-            {
-                var list = _prevFolders.ToList();
-                list.RemoveAt(0);
-
-                _prevFolders = new Stack<FolderModel>(list);
-            }
+                _prevFolders.RemoveAt(0);
         }
 
         public void LimitNextFoldersStack()
         {
             if (_nextFolders.Count > 20)
-            {
-                var list = _nextFolders.ToList();
-                list.RemoveAt(0);
-
-                _nextFolders = new Stack<FolderModel>(list);
-            }
+                _nextFolders.RemoveAt(0);
         }
     }
 }
