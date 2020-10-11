@@ -1,6 +1,4 @@
-﻿//Note: Color distinction between file and folder temporarily removed.
-
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
