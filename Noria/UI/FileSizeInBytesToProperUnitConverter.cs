@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -13,19 +15,20 @@ namespace Noria.UI
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            const int unitsPerUnit = 1024;
             int maxDecimalDigitsCount = parameter != null ? (int)parameter : 2;
             
             if (value == null)
                 return null;
 
             double sizeInBytes = (long)value;
-            double sizeInKillobytes = Math.Round(sizeInBytes / 1024, 
+            double sizeInKillobytes = Math.Round(sizeInBytes / unitsPerUnit, 
                 maxDecimalDigitsCount);
-            double sizeInMegabytes = Math.Round(sizeInKillobytes / 1024,
+            double sizeInMegabytes = Math.Round(sizeInKillobytes / unitsPerUnit,
                 maxDecimalDigitsCount);
-            double sizeInGigabytes = Math.Round(sizeInMegabytes / 1024,
+            double sizeInGigabytes = Math.Round(sizeInMegabytes / unitsPerUnit,
                 maxDecimalDigitsCount);
-            double sizeInTerabytes = Math.Round(sizeInGigabytes / 1024,
+            double sizeInTerabytes = Math.Round(sizeInGigabytes / unitsPerUnit,
                 maxDecimalDigitsCount);
 
             if (sizeInTerabytes >= 1)
