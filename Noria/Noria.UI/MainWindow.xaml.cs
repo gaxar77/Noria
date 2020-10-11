@@ -279,5 +279,28 @@ namespace Noria.UI
             dirPathBreadCrumb.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
             txtPath.Visibility = show ? Visibility.Collapsed : Visibility.Visible;
         }
+
+        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (!dirPathBreadCrumb.IsMouseOver)
+            {
+                ShowBreadCrumb(true);
+            }
+        }
+
+        private void trvFolderTree_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ShowBreadCrumb(true);
+        }
+
+        private void dgrdFolderView_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ShowBreadCrumb(true);
+        }
+
+        private void dgrdFolderView_ColumnHeader_Click(object sender, RoutedEventArgs e)
+        {
+            ShowBreadCrumb(true);
+        }
     }
 }

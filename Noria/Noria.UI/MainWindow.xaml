@@ -8,7 +8,7 @@
         xmlns:localVM="clr-namespace:Noria.ViewModel"
         mc:Ignorable="d"
         Title="Noria" Height="450" Width="900">
-    <Grid Background="LightBlue">
+    <Grid Background="LightBlue" MouseDown="Grid_MouseDown">
         <Grid.Resources>
             <ResourceDictionary Source="..\Themes\Generic.xaml"/>
         </Grid.Resources>
@@ -69,7 +69,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="100"/>
                 </Grid.ColumnDefinitions>
-                <TreeView Name="trvFolderTree" Grid.Column="0">
+                <TreeView Name="trvFolderTree" Grid.Column="0" MouseDown="trvFolderTree_MouseDown">
                     <TreeView.Resources>
                         <Style TargetType="TreeViewItem">
                             <EventSetter Event="Expanded" Handler="trvFolderTree_Item_Expanded"/>
@@ -89,6 +89,7 @@
                               ResizeBehavior="PreviousAndNext" 
                               ResizeDirection="Columns"/>
                 <DataGrid Grid.Column="2" DataContext="{Binding Folder}" ItemsSource="{Binding Items}" AutoGenerateColumns="False"
+                          MouseDown="dgrdFolderView_MouseDown"
                           Name="dgrdFolderView"
                           GotFocus="dgrdFolderView_GotFocus"
                           GridLinesVisibility="None"
@@ -100,6 +101,9 @@
                     <DataGrid.Resources>
                         <Style TargetType="DataGridRow">
                             <EventSetter Event="MouseDoubleClick" Handler="dgrdFolderViewRow_MouseDoubleClick"/>
+                        </Style>
+                        <Style TargetType="DataGridColumnHeader">
+                            <EventSetter Event="Click" Handler="dgrdFolderView_ColumnHeader_Click"/>
                         </Style>
                         <localUI:FileTypeToIconConverter x:Key="foiConverter"/>
                     </DataGrid.Resources>
