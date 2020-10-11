@@ -9,7 +9,7 @@ The name of this application will change to avoid conflicts with an existing com
 1. Displays files and folder in a detailed data grid, showing the file name, modified date, type, and size.
 2. Displays an interface allowing the user to navigate from folder to folder by double-clicking on the folder in the folder view, clicking open after selecting a folder in the folder view, selecting a folder in the folder tree view, clicking a breadcrumb button, typing a folder path into the path bar and pressing enter, clicking back, forth, or up. 
 3. Allows the user to open, rename, and delete files and folders by clicking on the respective button after selecting a file/folder.
-4. Has a partially implemented breadcrumb that turns into a folder path textbox when you click on an area besides the buttons. The breadcrum displays the folder path, where each component of the path is a separate button. When you click on a breadcrumb, Noria navigates to that folder.
+4. Has a partially implemented breadcrumb that turns into a folder path textbox when you click on an area besides the buttons. The breadcrum displays the folder path, where each component of the path is a separate button. When you click on a breadcrumb button, Noria navigates to that folder.
 
 ## Features shown in the interface but not yet implemented.
 1. Will allow the user to copy, cut, and past files/folders.
