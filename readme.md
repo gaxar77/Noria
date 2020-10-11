@@ -1,5 +1,4 @@
-Noria
-===
+# Noria
 
 This is a file manager application, having only the most basic features, many of which are not yet implemented.
 I intend to grow it into a large application like the Windows File Explorer.
@@ -7,7 +6,6 @@ I intend to grow it into a large application like the Windows File Explorer.
 The name of this application will change to avoid conflicts with an existing company name.
 
 ## Features
-===
 1. Displays an interface allowing the user to navigate from folder to folder by double-clicking on the folder in the folder view, clicking open after selecting a folder selecting a folder in the folder tree view, clicking a breadcrumb button, clicking the breadrcum in an area besides the button, typing a folder path, and pressing enter, and clicking back, forth, or up. 
 2. Allows the user to open, rename, and delete files and folders by clicking on the respective button after selecting a file/folder.
 
@@ -18,6 +16,6 @@ The name of this application will change to avoid conflicts with an existing com
   
 ## Screenshots
 
-Below is a screenshot of the current interface. I know is not very pleasing asthetically, but I intend to improve its appearance in the future.
+Below is a screenshot of the current interface. I know it's not very pleasing asthetically, but I intend to improve its appearance in the future.
 
 <img src="Screenshots/Screenshot 1.png"/>
