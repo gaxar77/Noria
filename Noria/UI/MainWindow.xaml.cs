@@ -9,7 +9,6 @@ using System.Windows.Input;
 
 namespace Noria.UI
 {
-    //Todo: Move ViewModel and FolderTreeViewModel into one ViewModel class.
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
