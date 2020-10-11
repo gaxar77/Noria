@@ -55,26 +55,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Noria.UI\DirectoryPathBreadCrumb.xaml.cs">
+    <Compile Include="UI\DirectoryPathBreadCrumb.xaml.cs">
       <DependentUpon>DirectoryPathBreadCrumb.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Noria.ViewModel\FileFolderItemModel.cs" />
-    <Compile Include="Noria.ViewModel\FolderFolderItemModel.cs" />
-    <Compile Include="Noria.ViewModel\FolderTreeItemModel.cs" />
-    <Compile Include="Noria.ViewModel\FolderTreeViewModel.cs" />
-    <Compile Include="Noria.ViewModel\FolderViewModel.cs" />
-    <Compile Include="Noria.ViewModel\FolderViewModelNavigationEventArgs.cs" />
-    <Compile Include="Noria.ViewModel\FolderModel.cs" />
-    <Compile Include="Noria.ViewModel\FolderItemModel.cs" />
-    <Compile Include="Noria.ViewModel\InaccessibleFolderModel.cs" />
-    <Compile Include="Noria.UI\RenameFileDialog.cs">
+    <Compile Include="UI\FileSizeInBytesToProperUnitConverter.cs" />
+    <Compile Include="ViewModel\FileFolderItemModel.cs" />
+    <Compile Include="ViewModel\FolderFolderItemModel.cs" />
+    <Compile Include="ViewModel\FolderTreeItemModel.cs" />
+    <Compile Include="ViewModel\FolderTreeViewModel.cs" />
+    <Compile Include="ViewModel\FolderViewModel.cs" />
+    <Compile Include="ViewModel\FolderViewModelNavigationEventArgs.cs" />
+    <Compile Include="ViewModel\FolderModel.cs" />
+    <Compile Include="ViewModel\FolderItemModel.cs" />
+    <Compile Include="ViewModel\InaccessibleFolderModel.cs" />
+    <Compile Include="UI\RenameFileDialog.cs">
       <DependentUpon>RenameFileDialog.xaml</DependentUpon>
     </Compile>
-    <Page Include="Noria.UI\DirectoryPathBreadCrumb.xaml">
+    <Page Include="UI\DirectoryPathBreadCrumb.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Noria.UI\MainWindow.xaml">
+    <Page Include="UI\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -82,13 +83,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Noria.Files\FileTypeUtility.cs" />
-    <Compile Include="Noria.UI\FileTypeToIconConverter.cs" />
-    <Compile Include="Noria.UI\MainWindow.xaml.cs">
+    <Compile Include="Files\FileTypeUtility.cs" />
+    <Compile Include="UI\FileTypeToIconConverter.cs" />
+    <Compile Include="UI\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Noria.UI\RenameFileDialog.xaml">
+    <Page Include="UI\RenameFileDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

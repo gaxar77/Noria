@@ -106,6 +106,7 @@
                             <EventSetter Event="Click" Handler="dgrdFolderView_ColumnHeader_Click"/>
                         </Style>
                         <localUI:FileTypeToIconConverter x:Key="foiConverter"/>
+                        <localUI:FileSizeInBytesToProperUnitConverter x:Key="fileSizeConverter"/>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Header="" IsReadOnly="True">
@@ -122,7 +123,7 @@
                                             IsReadOnly="True" Width="150"/>
                         <DataGridTextColumn Header="Type" Binding="{Binding FileType}"
                                             IsReadOnly="True" Width="100"/>
-                        <DataGridTextColumn Header="Size" Binding="{Binding SizeInBytes}" 
+                        <DataGridTextColumn Header="Size" Binding="{Binding Path=SizeInBytes, Converter={StaticResource fileSizeConverter}}" 
                                             IsReadOnly="True" Width="100"/>
                     </DataGrid.Columns>
                 </DataGrid>
