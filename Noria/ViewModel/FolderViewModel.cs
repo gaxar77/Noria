@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Windows.Media;
 
 namespace Noria.ViewModel
 {
@@ -100,7 +102,7 @@ namespace Noria.ViewModel
                 OnNavigated(prevFolder, Folder);
                 return true;
             }
-            catch (Exception exc)
+            catch (Exception)
             {
                 return false;
             }

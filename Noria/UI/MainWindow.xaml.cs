@@ -1,19 +1,11 @@
-﻿using System;
+﻿using Noria.ViewModel;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Markup;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using Shapes = System.Windows.Shapes;
-using Noria.ViewModel;
 
 namespace Noria.UI
 {
@@ -23,25 +15,26 @@ namespace Noria.UI
     /// </summary>
     public partial class MainWindow : Window
     {
-        FolderViewModel _viewModel = new FolderViewModel();
-        FolderTreeViewModel _folderTreeViewModel = new FolderTreeViewModel();
-
+        MainWindowViewModel _viewModel;
         public MainWindow()
         {
             InitializeComponent();
 
-            DataContext = _viewModel;
-
-            _viewModel.Navigated += _viewModel_Navigated;
-
-            _folderTreeViewModel.RootFolders.Add(new FolderTreeItemModel(@"C:\"));
-
-            trvFolderTree.ItemsSource = _folderTreeViewModel.RootFolders;
-
-            _viewModel.DirectoryPath = @"C:\";
+            LoadViewModel();
         }
 
-        private void _viewModel_Navigated(object sender, FolderViewModelNavigationEventArgs e)
+        private void LoadViewModel()
+        {
+            var viewModelBuilder = new MainWindowViewModelBuilder();
+            viewModelBuilder.BuildAll();
+
+            _viewModel = viewModelBuilder.ViewModel;
+            DataContext = _viewModel;
+
+            _viewModel.FolderViewModel.Navigated += _folderViewModel_Navigated;
+        }
+
+        private void _folderViewModel_Navigated(object sender, FolderViewModelNavigationEventArgs e)
         {
             if (e.NewFolder is InaccessibleFolderModel)
             {
@@ -65,7 +58,7 @@ namespace Noria.UI
             {
                 if (item is FolderFolderItemModel)
                 {
-                    _viewModel.DirectoryPath = item.ItemPath;
+                    _viewModel.FolderViewModel.DirectoryPath = item.ItemPath;
                 }
                 else
                 {
@@ -76,7 +69,7 @@ namespace Noria.UI
 
         private void ScrollToTopOfFolderView()
         {
-            var topItem = _viewModel.Folder.Items.FirstOrDefault();
+            var topItem = _viewModel.FolderViewModel.Folder.Items.FirstOrDefault();
 
             if (topItem != null)
             {
@@ -87,11 +80,11 @@ namespace Noria.UI
         private void btnUp_Click(object sender, RoutedEventArgs e)
         {
            
-            var parentDirectory = Directory.GetParent(_viewModel.DirectoryPath);
+            var parentDirectory = Directory.GetParent(_viewModel.FolderViewModel.DirectoryPath);
 
             if (parentDirectory != null)
             {
-                _viewModel.DirectoryPath = parentDirectory.FullName;
+                _viewModel.FolderViewModel.DirectoryPath = parentDirectory.FullName;
             }
         }
 
@@ -147,7 +140,7 @@ namespace Noria.UI
                         MessageBox.Show("Unable to rename item.");
                     }
 
-                    _viewModel.TryRefresh();
+                    _viewModel.FolderViewModel.TryRefresh();
                 }
             }
         }
@@ -173,7 +166,7 @@ namespace Noria.UI
                             File.Delete(item.ItemPath);
                         }
 
-                        _viewModel.Folder.Items.Remove(item);
+                        _viewModel.FolderViewModel.Folder.Items.Remove(item);
                     }
                     catch (Exception)
                     {
@@ -215,24 +208,24 @@ namespace Noria.UI
         {
             if (e.Key == Key.Enter)
             {
-                _viewModel.DirectoryPath = txtPath.Text;
+                _viewModel.FolderViewModel.DirectoryPath = txtPath.Text;
                 dgrdFolderView.Focus();
             }
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            _viewModel.TryNavigateBack();
+            _viewModel.FolderViewModel.TryNavigateBack();
         }
 
         private void btnForward_Click(object sender, RoutedEventArgs e)
         {
-            _viewModel.TryNavigateForward();
+            _viewModel.FolderViewModel.TryNavigateForward();
         }
 
         private void DirectoryPathBreadCrumb_BreadCrumbPathSelected(object sender, BreadCrumbPathSelected e)
         {
-            _viewModel.DirectoryPath = e.PathComponent.DirectoryPath;
+            _viewModel.FolderViewModel.DirectoryPath = e.PathComponent.DirectoryPath;
         }
 
         private void dirPathBreadCrumb_MainPanelMouseDown(object sender, EventArgs e)
@@ -267,7 +260,7 @@ namespace Noria.UI
 
             var folderTreeItem = (FolderTreeItemModel)item.Header;
 
-            _viewModel.DirectoryPath = folderTreeItem.FolderPath;
+            _viewModel.FolderViewModel.DirectoryPath = folderTreeItem.FolderPath;
 
             e.Handled = true;
         }

@@ -6,7 +6,7 @@ I intend to grow it into a large application like the Windows File Explorer.
 The name of this application will change to avoid conflicts with an existing company name.
 
 ## Features
-1. Displays a tree of folders on the C: drive, where each folder item can be expanded and collapsed.
+1. Displays a tree of folders for each of the drives on the computer, where each folder item can be expanded and collapsed.
 2. Displays files and folder in a detailed data grid, showing the file name, modified date, type, and size.
 3. Displays an interface allowing the user to navigate from folder to folder by double-clicking on the folder in the folder view, clicking open after selecting a folder in the folder view, selecting a folder in the folder tree view, clicking a breadcrumb button, typing a folder path into the path bar and pressing enter, clicking back, forth, or up. 
 4. Allows the user to open, rename, and delete files and folders by clicking on the respective button after selecting a file/folder.

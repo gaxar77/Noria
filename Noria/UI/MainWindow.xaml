@@ -43,11 +43,13 @@
                              Text="{Binding Path=DirectoryPath, Mode=OneWay}"
                              LostFocus="txtPath_LostFocus"
                              KeyDown="txtPath_KeyDown"
-                             Visibility="Collapsed"/>
+                             Visibility="Collapsed"
+                             DataContext="{Binding FolderViewModel}"/>
                     <localUI:DirectoryPathBreadCrumb x:Name="dirPathBreadCrumb" Margin="5, 0, 0, 0" 
                                                        BreadCrumbPathSelected="DirectoryPathBreadCrumb_BreadCrumbPathSelected"
                                                        MainPanelMouseDown="dirPathBreadCrumb_MainPanelMouseDown"
-                                                       DirectoryPath="{Binding Path=DirectoryPath}"/>
+                                                       DirectoryPath="{Binding Path=DirectoryPath}"
+                                                       DataContext="{Binding FolderViewModel}"/>
                 </Grid>
             </Grid>
             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right"
@@ -69,7 +71,10 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="100"/>
                 </Grid.ColumnDefinitions>
-                <TreeView Name="trvFolderTree" Grid.Column="0" MouseDown="trvFolderTree_MouseDown">
+                <TreeView Name="trvFolderTree" Grid.Column="0" 
+                          MouseDown="trvFolderTree_MouseDown"
+                          DataContext="{Binding FolderTreeViewModel}"
+                          ItemsSource="{Binding RootFolders}">
                     <TreeView.Resources>
                         <Style TargetType="TreeViewItem">
                             <EventSetter Event="Expanded" Handler="trvFolderTree_Item_Expanded"/>
@@ -88,7 +93,8 @@
                               HorizontalAlignment="Stretch"
                               ResizeBehavior="PreviousAndNext" 
                               ResizeDirection="Columns"/>
-                <DataGrid Grid.Column="2" DataContext="{Binding Folder}" ItemsSource="{Binding Items}" AutoGenerateColumns="False"
+                <DataGrid Grid.Column="2" 
+                          DataContext="{Binding Path=FolderViewModel.Folder}" ItemsSource="{Binding Items}" AutoGenerateColumns="False"
                           MouseDown="dgrdFolderView_MouseDown"
                           Name="dgrdFolderView"
                           GotFocus="dgrdFolderView_GotFocus"
