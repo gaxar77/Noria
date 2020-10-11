@@ -20,4 +20,4 @@ The name of this application will change to avoid conflicts with an existing com
 
 Below is a screenshot of the current interface. I know is not very pleasing asthetically, but I intend to improve its appearance in the future.
 
-![Noria Screenshot](Screenshots\Screenshot 1.png)
+<img src="Screenshots/Screenshot 1.png"/>
