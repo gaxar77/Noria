@@ -99,7 +99,7 @@ namespace Noria.UI
 
         private void dgrdFolderView_GotFocus(object sender, RoutedEventArgs e)
         {
-            dirPathBreadCrumb.Visibility = Visibility.Visible;
+            ShowBreadCrumb(true);
         }
 
         private void dgrdFolderView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -209,7 +209,8 @@ namespace Noria.UI
         private void txtPath_LostFocus(object sender, RoutedEventArgs e)
         {
             txtPath.InvalidateProperty(TextBox.TextProperty);
-            dirPathBreadCrumb.Visibility = Visibility.Visible;
+
+            ShowBreadCrumb(true);
         }
 
         private void txtPath_KeyDown(object sender, KeyEventArgs e)
@@ -238,7 +239,7 @@ namespace Noria.UI
 
         private void dirPathBreadCrumb_MainPanelMouseDown(object sender, EventArgs e)
         {
-            dirPathBreadCrumb.Visibility = Visibility.Collapsed;
+            ShowBreadCrumb(false);
         }
 
         private void btnNewFolder_Click(object sender, RoutedEventArgs e)
@@ -271,6 +272,12 @@ namespace Noria.UI
             _viewModel.DirectoryPath = folderTreeItem.FolderPath;
 
             e.Handled = true;
+        }
+
+        private void ShowBreadCrumb(bool show)
+        {
+            dirPathBreadCrumb.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
+            txtPath.Visibility = show ? Visibility.Collapsed : Visibility.Visible;
         }
     }
 }

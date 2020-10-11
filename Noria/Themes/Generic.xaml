@@ -2,4 +2,13 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:Noria">
+    <Style TargetType="Button">
+        <Setter Property="Background" Value="LightBlue"/>
+    </Style>
+    <Style TargetType="TextBox">
+        <Setter Property="Background" Value="LightBlue"/>
+    </Style>
+    <Style TargetType="GridSplitter">
+        <Setter Property="Background" Value="LightBlue"/>
+    </Style>
 </ResourceDictionary>

@@ -84,7 +84,6 @@ namespace Noria.UI
                 {
                     Content = pathComponent.DirectoryName,
                     Padding = new Thickness(5, 5, 5, 5),
-                    Background = Brushes.LightBlue,
                     Margin = new Thickness(0, 0, 0, 0),
                     HorizontalAlignment = HorizontalAlignment.Left
                 };

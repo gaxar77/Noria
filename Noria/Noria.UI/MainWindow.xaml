@@ -7,89 +7,88 @@
         xmlns:localUI="clr-namespace:Noria.UI"
         xmlns:localVM="clr-namespace:Noria.ViewModel"
         mc:Ignorable="d"
-        Title="Noria" Height="450" Width="900" Background="LightBlue">
-    <Grid Background="LightBlue" HorizontalAlignment="Stretch" Margin="10" >
+        Title="Noria" Height="450" Width="900">
+    <Grid Background="LightBlue">
         <Grid.Resources>
-            <Style TargetType="Button">
-                <Setter Property="Background" Value="Transparent"/>
-            </Style>
+            <ResourceDictionary Source="..\Themes\Generic.xaml"/>
         </Grid.Resources>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Grid Margin="0, 0, 0, 0">
+        <Grid HorizontalAlignment="Stretch" Margin="10">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <StackPanel Orientation="Horizontal" Grid.Column="0">
-                <!--<Button Name="btnGo" Content="Go" Margin="0, 10, 10, 10" Padding="5" Click="btnGo_Click"/>!-->
-                <!--Todo: Replace button text with icons!-->
-                <Button Name="btnUp" Content="/\" Margin="0, 0, 5, 0" Padding="5" Click="btnUp_Click"/>
-                <Button Name="btnBack" Content="&lt;-" Margin="0, 0, 5, 0" Padding="5" Click="btnBack_Click"/>
-                <Button Name="btnForward" Content="->" Margin="0, 0, 5, 0" Padding="5" Click="btnForward_Click"/>
-            </StackPanel>
-            <!--<TextBlock Grid.Column="0" Margin="10, 10, 0, 10" VerticalAlignment="Center">Path:</TextBlock>!-->
-            <Grid Grid.Column="1">
-                <TextBox Name="txtPath" HorizontalAlignment="Stretch" Margin="5, 0, 0, 0"
+            <Grid Margin="0, 0, 0, 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" Grid.Column="0">
+                    <!--<Button Name="btnGo" Content="Go" Margin="0, 10, 10, 10" Padding="5" Click="btnGo_Click"/>!-->
+                    <!--Todo: Replace button text with icons!-->
+                    <Button Name="btnUp" Content="/\" Margin="0, 0, 5, 0" Padding="5" Click="btnUp_Click"/>
+                    <Button Name="btnBack" Content="&lt;-" Margin="0, 0, 5, 0" Padding="5" Click="btnBack_Click"/>
+                    <Button Name="btnForward" Content="->" Margin="0, 0, 5, 0" Padding="5" Click="btnForward_Click"/>
+                </StackPanel>
+                <!--<TextBlock Grid.Column="0" Margin="10, 10, 0, 10" VerticalAlignment="Center">Path:</TextBlock>!-->
+                <Grid Grid.Column="1">
+                    <TextBox Name="txtPath" HorizontalAlignment="Stretch" Margin="5, 0, 0, 0"
                              Text="{Binding Path=DirectoryPath, Mode=OneWay}"
                              LostFocus="txtPath_LostFocus"
-                             KeyDown="txtPath_KeyDown"/>
-                <localUI:DirectoryPathBreadCrumb x:Name="dirPathBreadCrumb" Margin="5, 0, 0, 0" 
+                             KeyDown="txtPath_KeyDown"
+                             Visibility="Collapsed"/>
+                    <localUI:DirectoryPathBreadCrumb x:Name="dirPathBreadCrumb" Margin="5, 0, 0, 0" 
                                                        BreadCrumbPathSelected="DirectoryPathBreadCrumb_BreadCrumbPathSelected"
                                                        MainPanelMouseDown="dirPathBreadCrumb_MainPanelMouseDown"
                                                        DirectoryPath="{Binding Path=DirectoryPath}"/>
+                </Grid>
             </Grid>
-        </Grid>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right"
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right"
                         Margin="0, 10, 0, 10">
-            <Button Name="btnNewFolder" Content="New Folder"
+                <Button Name="btnNewFolder" Content="New Folder"
                         Padding="5" Margin="5, 0, 0, 0"
                         Click="btnNewFolder_Click"/>
-            <Button Name="btnNewFile" Content="New File"
+                <Button Name="btnNewFile" Content="New File"
                         Padding="5" Margin="5, 0, 0, 0"
                         Click="btnNewFile_Click"/>
-        </StackPanel>
-        <Grid Grid.Row="2">
-            <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"/>
-                <ColumnDefinition Width="10"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="100"/>
-            </Grid.ColumnDefinitions>
-            <TreeView Name="trvFolderTree" Grid.Column="0">
-                <TreeView.Resources>
-                    <Style TargetType="TreeViewItem">
-                        <EventSetter Event="Expanded" Handler="trvFolderTree_Item_Expanded"/>
-                        <EventSetter Event="Selected" Handler="trvFolderTree_Item_Selected"/>
-                    </Style>
+            </StackPanel>
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                <TreeView Name="trvFolderTree" Grid.Column="0">
+                    <TreeView.Resources>
+                        <Style TargetType="TreeViewItem">
+                            <EventSetter Event="Expanded" Handler="trvFolderTree_Item_Expanded"/>
+                            <EventSetter Event="Selected" Handler="trvFolderTree_Item_Selected"/>
+                        </Style>
 
-                    <HierarchicalDataTemplate DataType="{x:Type localVM:FolderTreeItemModel}" ItemsSource="{Binding SubFolders}">
-                        <TextBlock Text="{Binding Path=FolderName}"/>
-                    </HierarchicalDataTemplate>
-                    <!--<DataTemplate DataType="self:FolderTreeItemModel">
+                        <HierarchicalDataTemplate DataType="{x:Type localVM:FolderTreeItemModel}" ItemsSource="{Binding SubFolders}">
+                            <TextBlock Text="{Binding Path=FolderName}"/>
+                        </HierarchicalDataTemplate>
+                        <!--<DataTemplate DataType="self:FolderTreeItemModel">
                         <TextBlock Text="{Binding Path=FolderName}"/>
                     </DataTemplate>!-->
-                </TreeView.Resources>
-            </TreeView>
-            <GridSplitter Grid.Column="1" Width="10" 
+                    </TreeView.Resources>
+                </TreeView>
+                <GridSplitter Grid.Column="1" Width="10" 
                               HorizontalAlignment="Stretch"
                               ResizeBehavior="PreviousAndNext" 
-                              ResizeDirection="Columns"
-                              Background="LightBlue"/>
-            <DataGrid Grid.Column="2" DataContext="{Binding Folder}" ItemsSource="{Binding Items}" AutoGenerateColumns="False"
+                              ResizeDirection="Columns"/>
+                <DataGrid Grid.Column="2" DataContext="{Binding Folder}" ItemsSource="{Binding Items}" AutoGenerateColumns="False"
                           Name="dgrdFolderView"
                           GotFocus="dgrdFolderView_GotFocus"
                           GridLinesVisibility="None"
@@ -98,40 +97,41 @@
                           RowHeaderWidth="0"
                           SelectionChanged="dgrdFolderView_SelectionChanged"
                           Background="White">
-                <DataGrid.Resources>
-                    <Style TargetType="DataGridRow">
-                        <EventSetter Event="MouseDoubleClick" Handler="dgrdFolderViewRow_MouseDoubleClick"/>
-                    </Style>
-                    <localUI:FileTypeToIconConverter x:Key="foiConverter"/>
-                </DataGrid.Resources>
-                <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="" IsReadOnly="True">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Rectangle Fill="{Binding Path=FileType, Converter={StaticResource foiConverter}, Mode=OneWay}"
+                    <DataGrid.Resources>
+                        <Style TargetType="DataGridRow">
+                            <EventSetter Event="MouseDoubleClick" Handler="dgrdFolderViewRow_MouseDoubleClick"/>
+                        </Style>
+                        <localUI:FileTypeToIconConverter x:Key="foiConverter"/>
+                    </DataGrid.Resources>
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Rectangle Fill="{Binding Path=FileType, Converter={StaticResource foiConverter}, Mode=OneWay}"
                                                Width="32" Height="32"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="File Name" Binding="{Binding ItemName}"
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="File Name" Binding="{Binding ItemName}"
                                             IsReadOnly="True" Width="150"/>
-                    <DataGridTextColumn Header="Date Modified" Binding="{Binding DateModified}"
+                        <DataGridTextColumn Header="Date Modified" Binding="{Binding DateModified}"
                                             IsReadOnly="True" Width="150"/>
-                    <DataGridTextColumn Header="Type" Binding="{Binding FileType}"
+                        <DataGridTextColumn Header="Type" Binding="{Binding FileType}"
                                             IsReadOnly="True" Width="100"/>
-                    <DataGridTextColumn Header="Size" Binding="{Binding SizeInBytes}" 
+                        <DataGridTextColumn Header="Size" Binding="{Binding SizeInBytes}" 
                                             IsReadOnly="True" Width="100"/>
-                </DataGrid.Columns>
-            </DataGrid>
-            <StackPanel Grid.Column="3">
-                <Button Name="btnOpen" Content="Open" Margin="10, 0, 0, 0" Padding="5" Click="btnOpen_Click"/>
-                <Button Name="btnRename" Content="Rename" Margin="10, 15, 0, 0" Padding="5" Click="btnRename_Click"/>
-                <Button Name="btnDelete" Content="Delete" Margin="10, 5, 0, 0" Padding="5" Click="btnDelete_Click"/>
-                <Button Name="btnCut" Content="Cut" Margin="10, 16, 0, 0" Padding="5" Click="btnCut_Click"/>
-                <Button Name="btnCopy" Content="Copy" Margin="10, 5, 0, 0" Padding="5" Click="btnCopy_Click"/>
-                <Button Name="btnPaste" Content="Paste" Margin="10, 5, 0, 0" Padding="5" Click="btnPaste_Click"/>
-                <Button Name="btnProperties" Content="Properties" Margin="10, 15, 0, 0" Padding="5" Click="btnProperties_Click"/>
-            </StackPanel>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel Grid.Column="3">
+                    <Button Name="btnOpen" Content="Open" Margin="10, 0, 0, 0" Padding="5" Click="btnOpen_Click"/>
+                    <Button Name="btnRename" Content="Rename" Margin="10, 15, 0, 0" Padding="5" Click="btnRename_Click"/>
+                    <Button Name="btnDelete" Content="Delete" Margin="10, 5, 0, 0" Padding="5" Click="btnDelete_Click"/>
+                    <Button Name="btnCut" Content="Cut" Margin="10, 16, 0, 0" Padding="5" Click="btnCut_Click"/>
+                    <Button Name="btnCopy" Content="Copy" Margin="10, 5, 0, 0" Padding="5" Click="btnCopy_Click"/>
+                    <Button Name="btnPaste" Content="Paste" Margin="10, 5, 0, 0" Padding="5" Click="btnPaste_Click"/>
+                    <Button Name="btnProperties" Content="Properties" Margin="10, 15, 0, 0" Padding="5" Click="btnProperties_Click"/>
+                </StackPanel>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

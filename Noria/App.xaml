@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:Noria"
              StartupUri="Noria.UI\MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary Source="Themes\Generic.xaml"/>
     </Application.Resources>
 </Application>
