@@ -9,6 +9,26 @@ using System.Windows.Navigation;
 
 namespace Noria.ViewModel
 {
+    public class FolderViewModelFileSystemItemProvider : IFileSystemItemProvider
+    {
+        FolderViewModel _folderViewModel;
+        public FolderViewModelFileSystemItemProvider(FolderViewModel folderViewModel)
+        {
+            _folderViewModel = folderViewModel;
+        }
+
+        public IFileSystemItem GetFileSystemItem(string path)
+        {
+            if (_folderViewModel.DirectoryPath == path)
+            {
+                return _folderViewModel.Folder;
+            }
+            else
+            {
+                return (IFileSystemItem)_folderViewModel.Folder.GetItemByPath(path);
+            }
+        }
+    }
     public class FolderViewModel : INotifyPropertyChanged
     {
         private const int MaxStackItemCount = 20;

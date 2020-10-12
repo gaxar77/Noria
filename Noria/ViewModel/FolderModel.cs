@@ -10,10 +10,15 @@ using System.Windows.Navigation;
 using System.Windows.Controls.Primitives;
 using System.Runtime.InteropServices;
 using System.Security.RightsManagement;
+using System.Security.Policy;
+using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace Noria.ViewModel
 {
-    public class FolderModel : INotifyPropertyChanged
+    public class FolderModel : INotifyPropertyChanged, IFileSystemItem,
+        IFileSystemSubItemsUpdatable, IFileSystemItemDeletable,
+        IFileSystemItemUpdatable
     {
         private string _folderPath;
         private ObservableCollection<FolderItemModel> _items
@@ -34,6 +39,8 @@ namespace Noria.ViewModel
         {
             get { return _items; }
         }
+
+        public string FileSystemItemPath => FolderPath;
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
@@ -97,6 +104,40 @@ namespace Noria.ViewModel
                 var folderFolderItem = new FolderFolderItemModel(subFolderPath);
 
                 items.Add(folderFolderItem);
+            }
+        }
+
+        public void AddItem(string itemPath)
+        {
+            var item = this.GetItemByPath(itemPath);
+
+            if (item == null)
+            {
+                item = FolderItemModel.CreateFromPath(itemPath);
+                _items.Add(item);
+            }
+        }
+
+        public void DeleteItem(string itemPath)
+        {
+            var item = this.GetItemByPath(itemPath);
+
+            if (item != null)
+            {
+                _items.Remove(item);
+            }
+        }
+
+        public void Delete()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(string itemPath, string newItemPath)
+        {
+            if (newItemPath != null)
+            {
+                throw new NotImplementedException();
             }
         }
     }

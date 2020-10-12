@@ -75,6 +75,7 @@
     </Compile>
     <Compile Include="UI\FileSizeInBytesToProperUnitConverter.cs" />
     <Compile Include="ViewModel\FileFolderItemModel.cs" />
+    <Compile Include="ViewModel\FileSystemItemProvider.cs" />
     <Compile Include="ViewModel\FolderFolderItemModel.cs" />
     <Compile Include="ViewModel\FolderModelExtensions.cs" />
     <Compile Include="ViewModel\FolderTreeItemModel.cs" />
@@ -83,11 +84,19 @@
     <Compile Include="ViewModel\FolderViewModelNavigationEventArgs.cs" />
     <Compile Include="ViewModel\FolderModel.cs" />
     <Compile Include="ViewModel\FolderItemModel.cs" />
-    <Compile Include="ViewModel\FolderViewModelUpdaterThroughWatchingFolder.cs" />
+    <Compile Include="ViewModel\GlobalFileSystemWatcherAdapter.cs" />
+    <Compile Include="ViewModel\IFileSystemItem.cs" />
+    <Compile Include="ViewModel\IFileSystemItemDeletable.cs" />
+    <Compile Include="ViewModel\IFileSystemItemProvider.cs" />
+    <Compile Include="ViewModel\IFileSystemItemUpdatable.cs" />
+    <Compile Include="ViewModel\IFileSystemSubItemsUpdatable.cs" />
+    <Compile Include="ViewModel\IFileSystemUpdatable.cs" />
+    <Compile Include="ViewModel\IFlleSystemItemReloadable.cs" />
     <Compile Include="ViewModel\InaccessibleFolderModel.cs" />
     <Compile Include="UI\RenameFileDialog.cs">
       <DependentUpon>RenameFileDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\IRefreshable.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModelBuilder.cs" />
     <Page Include="UI\DirectoryPathBreadCrumb.xaml">

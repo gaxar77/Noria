@@ -16,17 +16,28 @@ namespace Noria.UI
     public partial class MainWindow : Window
     {
         MainWindowViewModel _viewModel;
-        FolderViewModelUpdaterThroughWatchingFolder _watcherAndUpdater;
+        //FolderViewModelUpdaterThroughWatchingFolder _watcherAndUpdater;
+        GlobalFileSystemWatcherAdapter _folderViewFileSystemWatcher;
+
         public MainWindow()
         {
             InitializeComponent();
 
             LoadViewModel();
 
-            _watcherAndUpdater = new FolderViewModelUpdaterThroughWatchingFolder(_viewModel.FolderViewModel,
-                SynchronizationContext.Current);
+            //_watcherAndUpdater = new FolderViewModelUpdaterThroughWatchingFolder(_viewModel.FolderViewModel,
+            //    SynchronizationContext.Current);
+
+            CreateFileSystemWatchers();
 
             _viewModel.FolderViewModel.TryRefresh();
+        }
+
+        private void CreateFileSystemWatchers()
+        {
+            _folderViewFileSystemWatcher = new GlobalFileSystemWatcherAdapter(
+                new FolderViewModelFileSystemItemProvider(_viewModel.FolderViewModel),
+                SynchronizationContext.Current);
         }
 
         private void LoadViewModel()

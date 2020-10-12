@@ -5,10 +5,13 @@ using System.Runtime.CompilerServices;
 using System.Windows.Markup;
 using System.IO;
 using Noria.Files;
+using System.Diagnostics.Contracts;
 
 namespace Noria.ViewModel
 {
-    public abstract class FolderItemModel : INotifyPropertyChanged
+
+    public abstract class FolderItemModel : INotifyPropertyChanged,
+        IFileSystemItem, IFileSystemItemUpdatable
     {
         bool _isLoaded;
         public string _itemName;
@@ -75,6 +78,8 @@ namespace Noria.ViewModel
             }
         }
 
+        public string FileSystemItemPath => ItemPath;
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
         {
@@ -97,6 +102,16 @@ namespace Noria.ViewModel
                 return new FileFolderItemModel(itemPath, fileTypeUtility);
             }
             
+        }
+
+        public void Update(string itemPath, string newItemPath)
+        {
+            if (newItemPath != null)
+            {
+                ItemPath = newItemPath;
+            }
+
+            Load();
         }
     }
 }
