@@ -10,7 +10,29 @@ using System.Windows.Input;
 
 namespace Noria.UI
 {
+    public class NewItemNameGenerator
+    {
+        public int _index = 1;
+        public string _baseName;
+
+        public NewItemNameGenerator(string baseName)
+        {
+            _baseName = baseName;
+        }
+        public string GenerateName()
+        {
+            if (_index == 1)
+            {
+                _index++;
+                return _baseName;
+            }
+
+            return $"{_baseName} {_index}";
+        }
+    }
+
     //Todo: Implement real-time updating of Folder Tree View.
+    //Todo: Refactor Code, moving Folder File System Watcher into the FolderViewModel class.
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -97,7 +119,7 @@ namespace Noria.UI
 
         private void btnUp_Click(object sender, RoutedEventArgs e)
         {
-           
+
             var parentDirectory = Directory.GetParent(_viewModel.FolderViewModel.DirectoryPath);
 
             if (parentDirectory != null)
@@ -151,14 +173,15 @@ namespace Noria.UI
                             File.Move(item.ItemPath, newItemPath);
                         }
 
-                        item.Load();
+                        //item.Load();
                     }
                     catch (Exception)
                     {
                         MessageBox.Show("Unable to rename item.");
                     }
 
-                    _viewModel.FolderViewModel.TryRefresh();
+                    if (!HasFolderViewModelFileSystemWatcher())
+                        _viewModel.FolderViewModel.TryRefresh();
                 }
             }
         }
@@ -184,7 +207,10 @@ namespace Noria.UI
                             File.Delete(item.ItemPath);
                         }
 
-                        _viewModel.FolderViewModel.Folder.Items.Remove(item);
+                        if (!HasFolderViewModelFileSystemWatcher())
+                        {
+                            _viewModel.FolderViewModel.Folder.Items.Remove(item);
+                        }
                     }
                     catch (Exception)
                     {
@@ -192,6 +218,16 @@ namespace Noria.UI
                     }
                 }
             }
+        }
+        private bool HasFolderViewModelFileSystemWatcher()
+        {
+            var hasFileSystemWatcher =
+                _folderViewFileSystemWatcher.HasFileSystemWatcher(
+                    _viewModel.FolderViewModel.DirectoryPath);
+
+            return hasFileSystemWatcher;
+
+
         }
 
         private void btnCut_Click(object sender, RoutedEventArgs e)
@@ -253,12 +289,67 @@ namespace Noria.UI
 
         private void btnNewFolder_Click(object sender, RoutedEventArgs e)
         {
-            ShowFeatureNotImplementedMessageBox();
+            try
+            {
+                var nameGen = new NewItemNameGenerator("New Folder");
+
+                while(true)
+                {
+                    var name = nameGen.GenerateName();
+                    var path = Path.Combine(
+                        _viewModel.FolderViewModel.DirectoryPath,
+                        name);
+
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+
+                        if (!HasFolderViewModelFileSystemWatcher())
+                        {
+                            _viewModel.FolderViewModel.Folder.AddItem(path);
+                        }
+
+                        break;
+                    }
+                };
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Unable to create folder.");
+            }
         }
 
+        //Todo: Allow user to select file type and generate it according to rules in the registry.
         private void btnNewFile_Click(object sender, RoutedEventArgs e)
         {
-            ShowFeatureNotImplementedMessageBox();
+            try
+            {
+                var nameGen = new NewItemNameGenerator("New File");
+
+                while (true)
+                {
+                    var name = nameGen.GenerateName();
+                    var path = Path.Combine(
+                        _viewModel.FolderViewModel.DirectoryPath,
+                        name);
+
+                    if (!File.Exists(path))
+                    {
+                        File.Create(path);
+
+                        if (!HasFolderViewModelFileSystemWatcher())
+                        {
+                            _viewModel.FolderViewModel.Folder.AddItem(path);
+                        }
+
+                        break;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Unable to create file.");
+            }
         }
 
         private void trvFolderTree_Item_Expanded(object sender, RoutedEventArgs e)

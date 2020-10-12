@@ -2,6 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Threading;
+using System.Linq;
 
 namespace Noria.ViewModel
 {
@@ -38,6 +39,18 @@ namespace Noria.ViewModel
                 {
                 }
             }
+        }
+
+        //Untested Code
+        public bool HasFileSystemWatcher(string path)
+        {
+            var drivePath = Path.GetPathRoot(path);
+
+            var hasFileSystemWatcher =
+                _fileSystemWatchers.Any(fsw => 
+                    String.Compare(fsw.Path, drivePath, true) == 0);
+
+            return hasFileSystemWatcher;
         }
 
         public void CreateFileSystemWatcher(string path)
@@ -169,6 +182,7 @@ namespace Noria.ViewModel
                 if (!_isDisposed)
                 {
                     DestoryFileSystemWatchers();
+                    _isDisposed = true;
                 }
             }
         }
