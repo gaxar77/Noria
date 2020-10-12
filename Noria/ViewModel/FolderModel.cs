@@ -23,7 +23,8 @@ namespace Noria.ViewModel
         private string _folderPath;
         private ObservableCollection<FolderItemModel> _items
             = new ObservableCollection<FolderItemModel>();
-
+        
+        public FolderViewModel FolderViewModel { get; private set; }
         public string FolderPath 
         {
             get { return _folderPath; }
@@ -50,12 +51,13 @@ namespace Noria.ViewModel
             PropertyChanged?.Invoke(this, e);
         }
 
-        public static FolderModel CreateFolder(string folderPath)
+        public static FolderModel CreateFolder(string folderPath, FolderViewModel folderViewModel)
         {
             if (!Directory.Exists(folderPath))
                 return new InaccessibleFolderModel()
                 {
-                    FolderPath = folderPath
+                    FolderPath = folderPath,
+                    FolderViewModel = folderViewModel
                 };
 
             var items = new List<FolderItemModel>();
@@ -67,7 +69,8 @@ namespace Noria.ViewModel
 
                 var folder = new FolderModel()
                 {
-                    FolderPath = folderPath
+                    FolderPath = folderPath,
+                    FolderViewModel = folderViewModel
                 };
 
                 items.ForEach(i => folder.Items.Add(i));
@@ -78,7 +81,8 @@ namespace Noria.ViewModel
             {
                 return new InaccessibleFolderModel()
                 {
-                    FolderPath = folderPath
+                    FolderPath = folderPath,
+                    FolderViewModel = folderViewModel
                 };
             }
         }
@@ -130,14 +134,14 @@ namespace Noria.ViewModel
 
         public void Delete()
         {
-            throw new NotImplementedException();
+            FolderViewModel.TryRefresh();
         }
 
         public void Update(string itemPath, string newItemPath)
         {
             if (newItemPath != null)
             {
-                throw new NotImplementedException();
+                FolderViewModel.TryNavigate(newItemPath, false);
             }
         }
     }

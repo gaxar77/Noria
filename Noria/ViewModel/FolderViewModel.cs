@@ -98,7 +98,7 @@ namespace Noria.ViewModel
             try
             {
 
-                Folder = FolderModel.CreateFolder(DirectoryPath);
+                Folder = FolderModel.CreateFolder(DirectoryPath, this);
                 
                 OnNavigated(_prevFolders.LastOrDefault(), Folder);
 
@@ -123,7 +123,7 @@ namespace Noria.ViewModel
 
             try
             {
-                Folder = FolderModel.CreateFolder(folderPath);
+                Folder = FolderModel.CreateFolder(folderPath, this);
 
                 _directoryPath = Folder.FolderPath;
 
