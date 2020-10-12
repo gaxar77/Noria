@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 namespace Noria.ViewModel
 {
     //Todo: Add synchronization locks.
+    //Todo: Fix double folder inaccessible message box appearance.
     public class FolderViewModelUpdaterThroughWatchingFolder
     {
         private FolderViewModel _folderViewModel;
