@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Noria.ViewModel
 {
+    //Todo: Add synchronization locks.
     public class FolderViewModelUpdaterThroughWatchingFolder
     {
         private FolderViewModel _folderViewModel;
@@ -43,7 +44,7 @@ namespace Noria.ViewModel
                 {
                     if (_folder != null)
                     {
-                        SetupFileSystemWatcher();
+                        SetupWatchers();
                     }
                     else
                     {
@@ -57,7 +58,7 @@ namespace Noria.ViewModel
             }
         }
 
-        public void SetupFileSystemWatcher()
+        public void SetupWatchers()
         {
             CreateItemsWatcher();
             CreateFolderWatcher();
@@ -76,10 +77,17 @@ namespace Noria.ViewModel
         {
             Task.Delay(PostDelay).ContinueWith((t) =>
             {
-                Application.Current.Dispatcher.Invoke(() =>
+                _synchronizationContext.Post((s) =>
                 {
-                    _folderViewModel.TryRefresh();
-                });
+                    if (!Directory.Exists(_folder.FolderPath))
+                    {
+                        _folderViewModel.TryRefresh();
+                    }
+                    else
+                    {
+                        SetupWatchers();
+                    }
+                }, null);
             });
         }
 
@@ -106,7 +114,7 @@ namespace Noria.ViewModel
 
             var parentPath = Directory.GetParent(_folder.FolderPath);
 
-            if (parentPath != null && parentPath.FullName != Path.GetPathRoot(parentPath.FullName))
+            if (parentPath != null && _folder.FolderPath != Path.GetPathRoot(_folder.FolderPath))
             {
                 var folderName = Path.GetFileName(_folder.FolderPath);
 

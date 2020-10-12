@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Media;
+using System.Windows.Navigation;
 
 namespace Noria.ViewModel
 {
@@ -76,7 +77,11 @@ namespace Noria.ViewModel
         {
             try
             {
+
                 Folder = FolderModel.CreateFolder(DirectoryPath);
+                
+                OnNavigated(_prevFolders.LastOrDefault(), Folder);
+
                 return true;
             }
             catch (Exception)
