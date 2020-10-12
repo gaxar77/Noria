@@ -10,6 +10,7 @@ using System.Windows.Input;
 
 namespace Noria.UI
 {
+    //Todo: Implement real-time updating of Folder Tree View.
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
