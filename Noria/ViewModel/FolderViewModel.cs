@@ -21,6 +21,10 @@ namespace Noria.ViewModel
         private List<FolderModel> _nextFolders
             = new List<FolderModel>();
 
+        public FolderViewModel()
+        {
+        }
+
         public FolderModel Folder
         {
             get { return _folder; }
@@ -97,6 +101,7 @@ namespace Noria.ViewModel
                 Folder = FolderModel.CreateFolder(folderPath);
 
                 _directoryPath = Folder.FolderPath;
+
                 OnPropertyChanged(nameof(DirectoryPath));
 
                 OnNavigated(prevFolder, Folder);
@@ -162,4 +167,9 @@ namespace Noria.ViewModel
                 _nextFolders.RemoveAt(0);
         }
     }
+    //public class FolderInvalidatedEventArgs
+    //{
+     //   public string NewFolderPath { get; private set; }
+        
+    //}
 }

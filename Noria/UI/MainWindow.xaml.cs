@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -15,11 +16,17 @@ namespace Noria.UI
     public partial class MainWindow : Window
     {
         MainWindowViewModel _viewModel;
+        FolderViewModelUpdaterThroughWatchingFolder _watcherAndUpdater;
         public MainWindow()
         {
             InitializeComponent();
 
             LoadViewModel();
+
+            _watcherAndUpdater = new FolderViewModelUpdaterThroughWatchingFolder(_viewModel.FolderViewModel,
+                SynchronizationContext.Current);
+
+            _viewModel.FolderViewModel.TryRefresh();
         }
 
         private void LoadViewModel()

@@ -6,6 +6,10 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Noria.UI;
 using Noria.Files;
+using System.Windows.Navigation;
+using System.Windows.Controls.Primitives;
+using System.Runtime.InteropServices;
+using System.Security.RightsManagement;
 
 namespace Noria.ViewModel
 {
@@ -42,7 +46,10 @@ namespace Noria.ViewModel
         public static FolderModel CreateFolder(string folderPath)
         {
             if (!Directory.Exists(folderPath))
-                return null;
+                return new InaccessibleFolderModel()
+                {
+                    FolderPath = folderPath
+                };
 
             var items = new List<FolderItemModel>();
 

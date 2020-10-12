@@ -3,6 +3,8 @@ using System.ComponentModel;
 using System.Security.RightsManagement;
 using System.Runtime.CompilerServices;
 using System.Windows.Markup;
+using System.IO;
+using Noria.Files;
 
 namespace Noria.ViewModel
 {
@@ -82,5 +84,19 @@ namespace Noria.ViewModel
         }
 
         public abstract void Load();
+
+        public static FolderItemModel CreateFromPath(string itemPath)
+        {
+            if (Directory.Exists(itemPath))
+            {
+                return new FolderFolderItemModel(itemPath);
+            }
+            else
+            {
+                var fileTypeUtility = new FileTypeUtility();
+                return new FileFolderItemModel(itemPath, fileTypeUtility);
+            }
+            
+        }
     }
 }
