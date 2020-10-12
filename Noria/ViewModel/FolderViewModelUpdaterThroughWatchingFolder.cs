@@ -74,7 +74,13 @@ namespace Noria.ViewModel
 
         private void Watcher_Error(object sender, ErrorEventArgs e)
         {
-            throw new System.Exception();
+            Task.Delay(PostDelay).ContinueWith((t) =>
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    _folderViewModel.TryRefresh();
+                });
+            });
         }
 
         private void CreateItemsWatcher()
@@ -232,8 +238,6 @@ namespace Noria.ViewModel
             }
         }
 
-        //public event EventHandler<FolderInvalidatedEventArgs> FolderInvalidated;
-
         public void OnFolderInvalidated(string newFolderPath)
         {
             if (newFolderPath != null)
@@ -242,7 +246,7 @@ namespace Noria.ViewModel
             }
             else
             {
-                _folderViewModel.TryNavigate(_folder.FolderPath);
+                _folderViewModel.TryRefresh();
             }
         }
     }
