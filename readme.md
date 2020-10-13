@@ -20,7 +20,7 @@ The name of this application will change to avoid conflicts with an existing com
   
 ## Known Bugs
 1. Deleting a folder via Explorer which is the parent or ancestor of a folder in the current view of Noria generates no response in Noria, but creates an invalid application state.
-
+2. 
 ## Screenshots
 
 Below is a screenshot of the current interface. I know it's not very pleasing asthetically, but I intend to improve its appearance in the future.
