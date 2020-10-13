@@ -8,16 +8,29 @@ using System.Windows.Navigation;
 
 namespace Noria.ViewModel
 {
-    public class FolderTreeItemModel : INotifyPropertyChanged, IFileSystemItem,
-        IFileSystemItemUpdatable, IFileSystemSubItemsUpdatable
+    public class FolderTreeItemModel : INotifyPropertyChanged, IFileSystemViewItem,
+        IFileSystemViewItemUpdatable, IFileSystemViewSubItemsUpdatable
     {
         private string _folderName;
         private string _folderPath;
         private ObservableCollection<FolderTreeItemModel> _subFolders
             = new ObservableCollection<FolderTreeItemModel>();
+        private bool _areSubFoldersLoaded;
+        private int _subFolderCount;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public bool AreSubFoldersLoaded
+        {
+            get { return _areSubFoldersLoaded; }
+
+            private set
+            {
+                _areSubFoldersLoaded = value;
+
+                OnPropertyChanged(nameof(AreSubFoldersLoaded));
+            }
+        }
         public string FolderName
         {
             get { return _folderName; }
@@ -28,6 +41,24 @@ namespace Noria.ViewModel
 
                 OnPropertyChanged(nameof(FolderName));
             }
+        }
+
+        public int SubFolderCount
+        {
+            get { return _subFolderCount; }
+
+            private set
+            {
+                _subFolderCount = value;
+
+                OnPropertyChanged(nameof(SubFolderCount));
+                OnPropertyChanged(nameof(HasSubFolders));
+            }
+        }
+
+        public bool HasSubFolders
+        {
+            get { return SubFolderCount > 0; }
         }
 
         public string FolderPath
@@ -70,10 +101,13 @@ namespace Noria.ViewModel
                 FolderName = FolderPath;
 
             SubFolders.Clear();
+
+            AreSubFoldersLoaded = false;
         }
 
         public bool LoadSubFolders()
         {
+            AreSubFoldersLoaded = false;
             SubFolders.Clear();
 
             try
@@ -87,14 +121,29 @@ namespace Noria.ViewModel
                     SubFolders.Add(subFolder);
                 }
 
-                return true;
+                AreSubFoldersLoaded = true;
             }
             catch (Exception)
             {
-                return false;
             }
+
+            return AreSubFoldersLoaded;
         }
 
+        public void LoadSubFolderCount()
+        {
+            SubFolderCount = 0;
+
+            try
+            {
+                SubFolderCount =
+                    Directory.GetDirectories(FolderPath)
+                        .Count();
+            }
+            catch (Exception)
+            {
+            }
+        }
         public FolderTreeItemModel GetSubFolderByPath(string path)
         {
             return SubFolders.SingleOrDefault(sf => sf.FolderPath == path);
@@ -110,6 +159,9 @@ namespace Noria.ViewModel
 
         public void AddItem(string itemPath)
         {
+            if (!AreSubFoldersLoaded)
+                return;
+
             if (GetSubFolderByPath(itemPath) == null)
             {
                 var item = new FolderTreeItemModel(itemPath);
@@ -120,12 +172,16 @@ namespace Noria.ViewModel
 
         public void DeleteItem(string itemPath)
         {
+            if (!AreSubFoldersLoaded)
+                return;
+
             var item = GetSubFolderByPath(itemPath);
 
             if (item != null)
             {
                 SubFolders.Remove(item);
             }
+            
         }
     }
 }

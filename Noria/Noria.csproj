@@ -75,29 +75,28 @@
     </Compile>
     <Compile Include="UI\FileSizeInBytesToProperUnitConverter.cs" />
     <Compile Include="ViewModel\FileFolderItemModel.cs" />
-    <Compile Include="ViewModel\FileSystemItemProvider.cs" />
     <Compile Include="ViewModel\FolderFolderItemModel.cs" />
     <Compile Include="ViewModel\FolderModelExtensions.cs" />
     <Compile Include="ViewModel\FolderTreeItemModel.cs" />
     <Compile Include="ViewModel\FolderTreeViewModel.cs" />
-    <Compile Include="ViewModel\FolderTreeViewModelFileSystemItemProvider.cs" />
+    <Compile Include="ViewModel\FolderTreeViewModelFileSystemViewItemProvider.cs" />
     <Compile Include="ViewModel\FolderViewModel.cs" />
+    <Compile Include="ViewModel\FolderViewModelFileSystemViewItemProvider.cs" />
     <Compile Include="ViewModel\FolderViewModelNavigationEventArgs.cs" />
     <Compile Include="ViewModel\FolderModel.cs" />
     <Compile Include="ViewModel\FolderItemModel.cs" />
     <Compile Include="ViewModel\GlobalFileSystemWatcherAdapter.cs" />
-    <Compile Include="ViewModel\IFileSystemItem.cs" />
-    <Compile Include="ViewModel\IFileSystemItemDeletable.cs" />
-    <Compile Include="ViewModel\IFileSystemItemProvider.cs" />
-    <Compile Include="ViewModel\IFileSystemItemUpdatable.cs" />
-    <Compile Include="ViewModel\IFileSystemSubItemsUpdatable.cs" />
-    <Compile Include="ViewModel\IFileSystemUpdatable.cs" />
-    <Compile Include="ViewModel\IFlleSystemItemReloadable.cs" />
+    <Compile Include="ViewModel\IFileSystemViewItem.cs" />
+    <Compile Include="ViewModel\IFileSystemViewItemDeletable.cs" />
+    <Compile Include="ViewModel\IFileSystemViewItemProvider.cs" />
+    <Compile Include="ViewModel\IFileSystemViewItemUpdatable.cs" />
+    <Compile Include="ViewModel\IFileSystemViewSubItemsUpdatable.cs" />
+    <Compile Include="ViewModel\IFlleSystemViewItemReloadable.cs" />
     <Compile Include="ViewModel\InaccessibleFolderModel.cs" />
     <Compile Include="UI\RenameFileDialog.cs">
       <DependentUpon>RenameFileDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\IRefreshable.cs" />
+    <Compile Include="ViewModel\IFileSystemViewItemRefreshable.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModelBuilder.cs" />
     <Page Include="UI\DirectoryPathBreadCrumb.xaml">

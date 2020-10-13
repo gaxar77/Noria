@@ -1,6 +1,6 @@
 ﻿namespace Noria.ViewModel
 {
-    public interface IFlleSystemItemReloadable
+    public interface IFlleSystemViewItemReloadable
     {
         void Reload();
     }

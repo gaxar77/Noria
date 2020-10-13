@@ -27,6 +27,8 @@ namespace Noria.UI
                 return _baseName;
             }
 
+            _index++;
+
             return $"{_baseName} {_index}";
         }
     }

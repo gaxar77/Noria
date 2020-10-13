@@ -1,14 +1,14 @@
 ﻿namespace Noria.ViewModel
 {
-    public class FolderTreeViewModelFileSystemItemProvider : IFileSystemItemProvider
+    public class FolderTreeViewModelFileSystemViewItemProvider : IFileSystemViewItemProvider
     {
         FolderTreeViewModel _folderTreeViewModel;
-        public FolderTreeViewModelFileSystemItemProvider(FolderTreeViewModel folderTreeViewModel)
+        public FolderTreeViewModelFileSystemViewItemProvider(FolderTreeViewModel folderTreeViewModel)
         {
             _folderTreeViewModel = folderTreeViewModel;
         }
 
-        public IFileSystemItem GetFileSystemItem(string path)
+        public IFileSystemViewItem GetFileSystemItem(string path)
         {
             foreach (FolderTreeItemModel rootFolder in _folderTreeViewModel.RootFolders)
             {

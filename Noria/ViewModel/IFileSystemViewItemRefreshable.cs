@@ -1,6 +1,6 @@
 ﻿namespace Noria.ViewModel
 {
-    public interface IRefreshable
+    public interface IFileSystemViewItemRefreshable
     {
         void Refresh();
     }

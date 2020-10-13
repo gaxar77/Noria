@@ -1,6 +1,6 @@
 ﻿namespace Noria.ViewModel
 {
-    public interface IFileSystemItemUpdatable
+    public interface IFileSystemViewItemUpdatable
     {
         void Update(string itemPath, string newItemPath);
     }

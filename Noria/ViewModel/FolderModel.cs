@@ -16,9 +16,9 @@ using System.Runtime.InteropServices.ComTypes;
 
 namespace Noria.ViewModel
 {
-    public class FolderModel : INotifyPropertyChanged, IFileSystemItem,
-        IFileSystemSubItemsUpdatable, IFileSystemItemDeletable,
-        IFileSystemItemUpdatable
+    public class FolderModel : INotifyPropertyChanged, IFileSystemViewItem,
+        IFileSystemViewSubItemsUpdatable, IFileSystemViewItemDeletable,
+        IFileSystemViewItemUpdatable
     {
         private string _folderPath;
         private ObservableCollection<FolderItemModel> _items

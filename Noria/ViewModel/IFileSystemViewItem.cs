@@ -1,6 +1,6 @@
 ﻿namespace Noria.ViewModel
 {
-    public interface IFileSystemItem
+    public interface IFileSystemViewItem
     {
         string FileSystemItemPath { get; }
     }

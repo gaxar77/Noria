@@ -11,7 +11,7 @@ namespace Noria.ViewModel
 {
 
     public abstract class FolderItemModel : INotifyPropertyChanged,
-        IFileSystemItem, IFileSystemItemUpdatable
+        IFileSystemViewItem, IFileSystemViewItemUpdatable
     {
         bool _isLoaded;
         public string _itemName;

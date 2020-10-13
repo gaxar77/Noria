@@ -1,6 +1,6 @@
 ﻿namespace Noria.ViewModel
 {
-    public interface IFileSystemItemDeletable
+    public interface IFileSystemViewItemDeletable
     {
         void Delete();
     }

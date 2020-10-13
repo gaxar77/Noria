@@ -25,7 +25,7 @@ namespace Noria.ViewModel
         public FolderTreeViewModel()
         {
             _fileSystemWatcher = new GlobalFileSystemWatcherAdapter(
-                new FolderTreeViewModelFileSystemItemProvider(this),
+                new FolderTreeViewModelFileSystemViewItemProvider(this),
                 SynchronizationContext.Current);
         }
         private void OnPropertyChanged(string propertyName)
