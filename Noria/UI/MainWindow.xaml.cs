@@ -12,7 +12,7 @@ namespace Noria.UI
 {
     public class NewItemNameGenerator
     {
-        public int _index = 1;
+        public int _index = 0;
         public string _baseName;
 
         public NewItemNameGenerator(string baseName)
@@ -21,13 +21,12 @@ namespace Noria.UI
         }
         public string GenerateName()
         {
+            _index++;
+
             if (_index == 1)
             {
-                _index++;
                 return _baseName;
             }
-
-            _index++;
 
             return $"{_baseName} {_index}";
         }
@@ -136,6 +135,11 @@ namespace Noria.UI
 
         //Todo: Refactor
         private void btnRename_Click(object sender, RoutedEventArgs e)
+        {
+            RenameSelectedItem();
+        }
+
+        private void RenameSelectedItem()
         {
             if (dgrdFolderView.SelectedItem is FolderItemModel item)
             {
@@ -282,11 +286,8 @@ namespace Noria.UI
                     {
                         Directory.CreateDirectory(path);
 
-                        //if (!HasFolderViewModelFileSystemWatcher())
-                        //{
-                        //    _viewModel.FolderViewModel.Folder.AddItem(path);
-                        //}
-
+                        AddAndSelectItem(path);
+                        RenameSelectedItem();
                         break;
                     }
                 };
@@ -315,10 +316,8 @@ namespace Noria.UI
                     {
                         File.Create(path);
 
-                        //if (!HasFolderViewModelFileSystemWatcher())
-                        //{
-                        //    _viewModel.FolderViewModel.Folder.AddItem(path);
-                        //}
+                        AddAndSelectItem(path);
+                        RenameSelectedItem();
 
                         break;
                     }
@@ -328,6 +327,22 @@ namespace Noria.UI
             {
                 MessageBox.Show("Unable to create file.");
             }
+        }
+
+        private void AddAndSelectItem(string path)
+        {
+            _viewModel
+                .FolderViewModel
+                .Folder
+                .AddItem(path);
+
+            var item = _viewModel
+                .FolderViewModel
+                .Folder
+                .GetItemByPath(path);
+
+            dgrdFolderView.SelectedItem = item;
+            dgrdFolderView.ScrollIntoView(item);
         }
 
         private void trvFolderTree_Item_Expanded(object sender, RoutedEventArgs e)
