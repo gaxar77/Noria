@@ -40,27 +40,13 @@ namespace Noria.UI
     {
         MainWindowViewModel _viewModel;
         //FolderViewModelUpdaterThroughWatchingFolder _watcherAndUpdater;
-        GlobalFileSystemWatcherAdapter _folderViewFileSystemWatcher;
-
         public MainWindow()
         {
             InitializeComponent();
 
             LoadViewModel();
 
-            //_watcherAndUpdater = new FolderViewModelUpdaterThroughWatchingFolder(_viewModel.FolderViewModel,
-            //    SynchronizationContext.Current);
-
-            CreateFileSystemWatchers();
-
             _viewModel.FolderViewModel.TryRefresh();
-        }
-
-        private void CreateFileSystemWatchers()
-        {
-            _folderViewFileSystemWatcher = new GlobalFileSystemWatcherAdapter(
-                new FolderViewModelFileSystemItemProvider(_viewModel.FolderViewModel),
-                SynchronizationContext.Current);
         }
 
         private void LoadViewModel()
@@ -180,8 +166,8 @@ namespace Noria.UI
                         MessageBox.Show("Unable to rename item.");
                     }
 
-                    if (!HasFolderViewModelFileSystemWatcher())
-                        _viewModel.FolderViewModel.TryRefresh();
+                    //if (!HasFolderViewModelFileSystemWatcher())
+                    //    _viewModel.FolderViewModel.TryRefresh();
                 }
             }
         }
@@ -207,10 +193,10 @@ namespace Noria.UI
                             File.Delete(item.ItemPath);
                         }
 
-                        if (!HasFolderViewModelFileSystemWatcher())
-                        {
-                            _viewModel.FolderViewModel.Folder.Items.Remove(item);
-                        }
+                        //if (!HasFolderViewModelFileSystemWatcher())
+                        //{
+                        //    _viewModel.FolderViewModel.Folder.Items.Remove(item);
+                        //}
                     }
                     catch (Exception)
                     {
@@ -218,16 +204,6 @@ namespace Noria.UI
                     }
                 }
             }
-        }
-        private bool HasFolderViewModelFileSystemWatcher()
-        {
-            var hasFileSystemWatcher =
-                _folderViewFileSystemWatcher.HasFileSystemWatcher(
-                    _viewModel.FolderViewModel.DirectoryPath);
-
-            return hasFileSystemWatcher;
-
-
         }
 
         private void btnCut_Click(object sender, RoutedEventArgs e)
@@ -304,10 +280,10 @@ namespace Noria.UI
                     {
                         Directory.CreateDirectory(path);
 
-                        if (!HasFolderViewModelFileSystemWatcher())
-                        {
-                            _viewModel.FolderViewModel.Folder.AddItem(path);
-                        }
+                        //if (!HasFolderViewModelFileSystemWatcher())
+                        //{
+                        //    _viewModel.FolderViewModel.Folder.AddItem(path);
+                        //}
 
                         break;
                     }
@@ -337,10 +313,10 @@ namespace Noria.UI
                     {
                         File.Create(path);
 
-                        if (!HasFolderViewModelFileSystemWatcher())
-                        {
-                            _viewModel.FolderViewModel.Folder.AddItem(path);
-                        }
+                        //if (!HasFolderViewModelFileSystemWatcher())
+                        //{
+                        //    _viewModel.FolderViewModel.Folder.AddItem(path);
+                        //}
 
                         break;
                     }

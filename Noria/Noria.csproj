@@ -80,6 +80,7 @@
     <Compile Include="ViewModel\FolderModelExtensions.cs" />
     <Compile Include="ViewModel\FolderTreeItemModel.cs" />
     <Compile Include="ViewModel\FolderTreeViewModel.cs" />
+    <Compile Include="ViewModel\FolderTreeViewModelFileSystemItemProvider.cs" />
     <Compile Include="ViewModel\FolderViewModel.cs" />
     <Compile Include="ViewModel\FolderViewModelNavigationEventArgs.cs" />
     <Compile Include="ViewModel\FolderModel.cs" />

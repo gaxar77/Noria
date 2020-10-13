@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Media;
 using System.Windows.Navigation;
+using System.Threading;
 
 namespace Noria.ViewModel
 {
@@ -42,8 +43,18 @@ namespace Noria.ViewModel
         private List<FolderModel> _nextFolders
             = new List<FolderModel>();
 
+
+        GlobalFileSystemWatcherAdapter _fileSystemWatcher;
+
         public FolderViewModel()
         {
+            _fileSystemWatcher = new GlobalFileSystemWatcherAdapter(
+                new FolderViewModelFileSystemItemProvider(this),
+                SynchronizationContext.Current);
+        }
+        public bool DoesUpdateFromFileSystem()
+        {
+            return _fileSystemWatcher.HasFileSystemWatcher(DirectoryPath);
         }
 
         public FolderModel Folder
