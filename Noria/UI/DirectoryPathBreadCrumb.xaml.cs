@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using Shapes = System.Windows.Shapes;
 using System.IO;
 using System.CodeDom;
+using Noria.FilesAndFolders;
 
 namespace Noria.UI
 {
@@ -60,9 +61,9 @@ namespace Noria.UI
             CreateBreadCrumbButtons();
         }
 
-        public event EventHandler<BreadCrumbPathSelected> BreadCrumbPathSelected;
+        public event EventHandler<BreadCrumbPathSelectedEventArgs> BreadCrumbPathSelected;
 
-        private BreadCrumbPathComponent[] _pathComponents;
+        private FileSystemPath _path;
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler MainPanelMouseDown;
 
@@ -76,13 +77,13 @@ namespace Noria.UI
         public void CreateBreadCrumbButtons()
         {
             mainPanel.Children.Clear();
-            _pathComponents = GetPathComponents(DirectoryPath);
+            _path = new FileSystemPath(DirectoryPath);
 
-            foreach (BreadCrumbPathComponent pathComponent in _pathComponents)
+            foreach (FileSystemPathComponent pathComponent in _path.PathComponents)
             {
                 var breadCrumbButton = new Button()
                 {
-                    Content = pathComponent.DirectoryName,
+                    Content = pathComponent.FileSystemObjectName,
                     Padding = new Thickness(5, 5, 5, 5),
                     Margin = new Thickness(0, 0, 0, 0),
                     HorizontalAlignment = HorizontalAlignment.Left
@@ -90,7 +91,7 @@ namespace Noria.UI
 
                 breadCrumbButton.Click += (o, e) =>
                     {
-                        var args = new BreadCrumbPathSelected(pathComponent);
+                        var args = new BreadCrumbPathSelectedEventArgs(pathComponent.Path);
 
                         BreadCrumbPathSelected?.Invoke(this, args);
                     };
@@ -99,50 +100,18 @@ namespace Noria.UI
             }
         }
 
-        public BreadCrumbPathComponent[] GetPathComponents(string path)
-        {
-            var pathComponents = new List<BreadCrumbPathComponent>();
-
-            while (path != null)
-            {
-                var directoryName = Path.GetFileName(path);
-                if (directoryName == String.Empty)
-                    directoryName = path;
-                
-                var pathComponent = new BreadCrumbPathComponent(directoryName, path);
-
-                path = Path.GetDirectoryName(path);
-
-                pathComponents.Add(pathComponent);
-            }
-
-            pathComponents.Reverse();
-
-            return pathComponents.ToArray();
-        }
-
         private void mainPanel_MouseDown(object sender, MouseButtonEventArgs e)
         {
             MainPanelMouseDown?.Invoke(this, new EventArgs());
         }
     }
-    public class BreadCrumbPathComponent
+   
+    public class BreadCrumbPathSelectedEventArgs
     {
-        public string DirectoryName { get; private set; }
         public string DirectoryPath { get; private set; }
-        public BreadCrumbPathComponent(string directoryName, string directoryPath)
+        public BreadCrumbPathSelectedEventArgs(string path)
         {
-            DirectoryName = directoryName;
-            DirectoryPath = directoryPath;
-        }
-    }
-
-    public class BreadCrumbPathSelected
-    {
-        public BreadCrumbPathComponent PathComponent { get; private set; }
-        public BreadCrumbPathSelected(BreadCrumbPathComponent pathComponent)
-        {
-            PathComponent = pathComponent;
+            DirectoryPath = path;
         }
     }
 }

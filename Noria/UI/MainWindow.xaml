@@ -74,10 +74,12 @@
                 <TreeView Name="trvFolderTree" Grid.Column="0" 
                           MouseDown="trvFolderTree_MouseDown"
                           DataContext="{Binding FolderTreeViewModel}"
-                          ItemsSource="{Binding RootFolders}">
-                    <TreeView.Resources>
+                          ItemsSource="{Binding RootFolders}"
+                          MouseDoubleClick="trvFolderTree_MouseDoubleClick">
+                <TreeView.Resources>
                         <Style TargetType="TreeViewItem">
                             <EventSetter Event="Expanded" Handler="trvFolderTree_Item_Expanded"/>
+                            <EventSetter Event="Collapsed" Handler="trvFolderTree_Item_Collapsed"/>
                             <EventSetter Event="Selected" Handler="trvFolderTree_Item_Selected"/>
                         </Style>
 

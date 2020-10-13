@@ -17,9 +17,21 @@ namespace Noria.ViewModel
             = new ObservableCollection<FolderTreeItemModel>();
         private bool _areSubFoldersLoaded;
         private int _subFolderCount;
+        private bool _isExpandedInUI;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public bool IsExpandedInUI
+        {
+            get { return _isExpandedInUI; }
+
+            set
+            {
+                _isExpandedInUI = value;
+
+                OnPropertyChanged(nameof(IsExpandedInUI));
+            }
+        }
         public bool AreSubFoldersLoaded
         {
             get { return _areSubFoldersLoaded; }
@@ -92,7 +104,7 @@ namespace Noria.ViewModel
             Init(folderPath);
         }
 
-        private void Init(string folderPath)
+        private void Init(string folderPath, bool clearSubFolders = true)
         {
             FolderPath = folderPath;
             FolderName = Path.GetFileName(folderPath);
@@ -100,9 +112,12 @@ namespace Noria.ViewModel
             if (String.IsNullOrEmpty(FolderName))
                 FolderName = FolderPath;
 
-            SubFolders.Clear();
+            if (clearSubFolders)
+            {
+                SubFolders.Clear();
 
-            AreSubFoldersLoaded = false;
+                AreSubFoldersLoaded = false;
+            }
         }
 
         public bool LoadSubFolders()
@@ -153,7 +168,8 @@ namespace Noria.ViewModel
         {
             if (newItemPath != null && itemPath == FileSystemItemPath)
             {
-                Init(newItemPath); 
+                var areSubFoldersLoaded = AreSubFoldersLoaded;
+                Init(newItemPath, false);
             }
         }
 
@@ -165,8 +181,12 @@ namespace Noria.ViewModel
             if (GetSubFolderByPath(itemPath) == null)
             {
                 var item = new FolderTreeItemModel(itemPath);
-
                 SubFolders.Add(item);
+
+                if (IsExpandedInUI)
+                {
+                    item.LoadSubFolders();
+                }
             }
         }
 

@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using Noria.Files;
+using Noria.FilesAndFolders;
 
 namespace Noria.ViewModel
 {

@@ -32,8 +32,10 @@ namespace Noria.UI
         }
     }
 
-    //Todo: Implement real-time updating of Folder Tree View.
-    //Todo: Refactor Code, moving Folder File System Watcher into the FolderViewModel class.
+  
+    //Todo: Fix problem where deleting the parent or ancestors of the folder in the current view causes nothing to happen, but creates an invalid application state.
+    //Todo: Implement cut, copy, and paste.
+    //Todo: Implement display of file and folder icons in the folder view.
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -46,8 +48,21 @@ namespace Noria.UI
             InitializeComponent();
 
             LoadViewModel();
+            LoadTreeViewRootFolderSubFolders();
 
             _viewModel.FolderViewModel.TryRefresh();
+        }
+
+        private void LoadTreeViewRootFolderSubFolders()
+        {
+            var rootFolders = _viewModel
+                .FolderTreeViewModel
+                .RootFolders;
+
+            foreach (FolderTreeItemModel rootFolder in rootFolders)
+            {
+                rootFolder.LoadSubFolders();
+            }
         }
 
         private void LoadViewModel()
@@ -259,9 +274,9 @@ namespace Noria.UI
             _viewModel.FolderViewModel.TryNavigateForward();
         }
 
-        private void DirectoryPathBreadCrumb_BreadCrumbPathSelected(object sender, BreadCrumbPathSelected e)
+        private void DirectoryPathBreadCrumb_BreadCrumbPathSelected(object sender, BreadCrumbPathSelectedEventArgs e)
         {
-            _viewModel.FolderViewModel.DirectoryPath = e.PathComponent.DirectoryPath;
+            _viewModel.FolderViewModel.DirectoryPath = e.DirectoryPath;
         }
 
         private void dirPathBreadCrumb_MainPanelMouseDown(object sender, EventArgs e)
@@ -347,24 +362,21 @@ namespace Noria.UI
 
         private void trvFolderTree_Item_Expanded(object sender, RoutedEventArgs e)
         {
-            var item = (TreeViewItem)sender;
+            if (((TreeViewItem)sender).DataContext is FolderTreeItemModel item)
+            {
+                foreach (FolderTreeItemModel subFolder in item.SubFolders)
+                {
+                    if (!subFolder.AreSubFoldersLoaded)
+                        subFolder.LoadSubFolders();
+                }
 
-            var folderTreeItem = (FolderTreeItemModel)item.Header;
-
-            folderTreeItem.LoadSubFolders();
+                item.IsExpandedInUI = true;
+            }
 
             e.Handled = true;
         }
-
         private void trvFolderTree_Item_Selected(object sender, RoutedEventArgs e)
         {
-            var item = (TreeViewItem)sender;
-
-            var folderTreeItem = (FolderTreeItemModel)item.Header;
-
-            _viewModel.FolderViewModel.DirectoryPath = folderTreeItem.FolderPath;
-
-            e.Handled = true;
         }
 
         private void ShowBreadCrumb(bool show)
@@ -394,6 +406,24 @@ namespace Noria.UI
         private void dgrdFolderView_ColumnHeader_Click(object sender, RoutedEventArgs e)
         {
             ShowBreadCrumb(true);
+        }
+
+        private void trvFolderTree_Item_Collapsed(object sender, RoutedEventArgs e)
+        {
+            if (((TreeViewItem)sender).DataContext is FolderTreeItemModel item)
+            {
+                item.IsExpandedInUI = false;
+            }
+
+            e.Handled = true;
+        }
+
+        private void trvFolderTree_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (trvFolderTree.SelectedItem is FolderTreeItemModel item)
+            {
+                _viewModel.FolderViewModel.DirectoryPath = item.FolderPath;
+            }
         }
     }
 }

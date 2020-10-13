@@ -8,7 +8,7 @@
             _folderTreeViewModel = folderTreeViewModel;
         }
 
-        public IFileSystemViewItem GetFileSystemItem(string path)
+        public IFileSystemViewItem GetFileSystemViewItem(string path)
         {
             foreach (FolderTreeItemModel rootFolder in _folderTreeViewModel.RootFolders)
             {

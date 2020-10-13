@@ -8,7 +8,7 @@
             _folderViewModel = folderViewModel;
         }
 
-        public IFileSystemViewItem GetFileSystemItem(string path)
+        public IFileSystemViewItem GetFileSystemViewItem(string path)
         {
             if (_folderViewModel.DirectoryPath == path)
             {

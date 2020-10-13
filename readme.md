@@ -19,7 +19,7 @@ The name of this application will change to avoid conflicts with an existing com
 2. Will allow the user to view the properties of a file/folder.
   
 ## Known Bugs
-1. Deleting a folder via Explorer in the ancestry of the folder in the current view of Noria generates no response in Noria, although deleting the parent folder is properly handled.
+1. Deleting a folder via Explorer which is the parent or ancestor of a folder in the current view of Noria generates no response in Noria, but creates an invalid application state.
 
 ## Screenshots
 

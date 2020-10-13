@@ -116,7 +116,7 @@ namespace Noria.ViewModel
 
         private void UpdateItem(string oldPath, string newPath)
         {
-            var item = _provider.GetFileSystemItem(oldPath);
+            var item = _provider.GetFileSystemViewItem(oldPath);
 
             var updatableItem = item as IFileSystemViewItemUpdatable;
 
@@ -141,14 +141,14 @@ namespace Noria.ViewModel
             {
                 lock (_syncRoot)
                 {
-                    var item = _provider.GetFileSystemItem(e.FullPath);
+                    var item = _provider.GetFileSystemViewItem(e.FullPath);
                     var deletableItem = item as IFileSystemViewItemDeletable;
 
                     if (deletableItem != null)
                         deletableItem.Delete();
 
                     var parentDir = GetParentDirectoryPath(e.FullPath);
-                    item = _provider.GetFileSystemItem(parentDir);
+                    item = _provider.GetFileSystemViewItem(parentDir);
 
                     var subItemUpdatable = item as IFileSystemViewSubItemsUpdatable;
                     if (subItemUpdatable != null)
@@ -166,7 +166,7 @@ namespace Noria.ViewModel
                 lock (_syncRoot)
                 {
                     var parentDir = GetParentDirectoryPath(e.FullPath);
-                    var subItemUpdatable = _provider.GetFileSystemItem(parentDir)
+                    var subItemUpdatable = _provider.GetFileSystemViewItem(parentDir)
                         as IFileSystemViewSubItemsUpdatable;
 
                     if (subItemUpdatable != null)

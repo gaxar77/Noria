@@ -111,7 +111,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Files\FileTypeUtility.cs" />
+    <Compile Include="FilesAndFolders\FileTypeUtility.cs" />
     <Compile Include="UI\FileTypeToIconConverter.cs" />
     <Compile Include="UI\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

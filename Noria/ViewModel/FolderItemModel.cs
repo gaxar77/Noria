@@ -4,7 +4,7 @@ using System.Security.RightsManagement;
 using System.Runtime.CompilerServices;
 using System.Windows.Markup;
 using System.IO;
-using Noria.Files;
+using Noria.FilesAndFolders;
 using System.Diagnostics.Contracts;
 
 namespace Noria.ViewModel

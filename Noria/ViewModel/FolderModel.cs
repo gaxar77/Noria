@@ -5,7 +5,7 @@ using System.IO;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Noria.UI;
-using Noria.Files;
+using Noria.FilesAndFolders;
 using System.Windows.Navigation;
 using System.Windows.Controls.Primitives;
 using System.Runtime.InteropServices;
