@@ -75,6 +75,9 @@
     </ApplicationDefinition>
     <Compile Include="FilesAndFolders\FileSystemPath.cs" />
     <Compile Include="FilesAndFolders\FileSystemPathComponent.cs" />
+    <Compile Include="FilesAndFolders\FileSystemPathComponentChain.cs" />
+    <Compile Include="FilesAndFolders\FileSystemPathComponentChainUpdatedEventArgs.cs" />
+    <Compile Include="FilesAndFolders\FileSystemPathComponentLink.cs" />
     <Compile Include="UI\DirectoryPathBreadCrumb.xaml.cs">
       <DependentUpon>DirectoryPathBreadCrumb.xaml</DependentUpon>
     </Compile>
