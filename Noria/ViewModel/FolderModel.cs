@@ -141,7 +141,7 @@ namespace Noria.ViewModel
         {
             if (newItemPath != null)
             {
-                FolderViewModel.TryNavigate(newItemPath, false);
+                //FolderViewModel.TryNavigate(newItemPath, false);
             }
         }
     }

@@ -7,6 +7,8 @@ using System.Runtime.InteropServices;
 using System.Windows.Media;
 using System.Windows.Navigation;
 using System.Threading;
+using Noria.FilesAndFolders;
+using System.Runtime.CompilerServices;
 
 namespace Noria.ViewModel
 {
@@ -23,6 +25,7 @@ namespace Noria.ViewModel
         private List<FolderModel> _nextFolders
             = new List<FolderModel>();
 
+        private FileSystemPathComponentChain _pathComponentChain;
 
         GlobalFileSystemWatcherAdapter _fileSystemWatcher;
 
@@ -105,6 +108,40 @@ namespace Noria.ViewModel
             }
         }
 
+        private void SetDirectoryPathComponentChain()
+        {
+            if (_pathComponentChain != null)
+            {
+                _pathComponentChain.Updated -= _pathComponentChain_Updated;
+
+                SynchronizationContext.Current.Post((s) =>
+                {
+                    GlobalFileSystemWatcherAdapter
+                        .Instance
+                        .FileSystemItemProviders
+                        .Remove(_pathComponentChain);
+                }, null);
+            }
+
+            _pathComponentChain = new FileSystemPathComponentChain(
+                _directoryPath);
+
+            _pathComponentChain.Updated += _pathComponentChain_Updated;
+
+            SynchronizationContext.Current.Post((s) =>
+            {
+                GlobalFileSystemWatcherAdapter
+                    .Instance
+                    .FileSystemItemProviders
+                    .Add(_pathComponentChain);
+            }, null);
+        }
+
+        private void _pathComponentChain_Updated(object sender, FileSystemPathComponentChainUpdatedEventArgs e)
+        {
+            TryNavigate(e.Path, true);
+        }
+
         public bool TryNavigate(string folderPath, bool suppressSavingInHistory = false, bool clearNextFolders = true)
         {
             var prevFolder = Folder;
@@ -122,6 +159,7 @@ namespace Noria.ViewModel
 
                 _directoryPath = Folder.FolderPath;
 
+                SetDirectoryPathComponentChain();
                 OnPropertyChanged(nameof(DirectoryPath));
 
                 OnNavigated(prevFolder, Folder);

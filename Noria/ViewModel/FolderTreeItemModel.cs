@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Navigation;
+using Noria.FilesAndFolders;
 
 namespace Noria.ViewModel
 {
@@ -168,8 +169,20 @@ namespace Noria.ViewModel
         {
             if (newItemPath != null && itemPath == FileSystemItemPath)
             {
-                var areSubFoldersLoaded = AreSubFoldersLoaded;
                 Init(newItemPath, false);
+
+                if (AreSubFoldersLoaded)
+                {
+                    foreach (var subFolder in SubFolders)
+                    {
+                        var newSubFolderPath =
+                            Path.Combine(FolderPath,
+                                subFolder.FolderName);
+
+                        subFolder.Update(subFolder.FolderPath,
+                            newSubFolderPath);
+                    }
+                }
             }
         }
 
