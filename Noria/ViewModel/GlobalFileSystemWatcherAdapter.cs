@@ -8,18 +8,39 @@ namespace Noria.ViewModel
 {
     public class GlobalFileSystemWatcherAdapter : IDisposable
     {
+        private static GlobalFileSystemWatcherAdapter _instance;
+
+        public static GlobalFileSystemWatcherAdapter Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new GlobalFileSystemWatcherAdapter(
+                        SynchronizationContext.Current);
+                }
+
+                return _instance;
+            }
+        }
+
         private object _syncRoot = new object();
         private List<FileSystemWatcher> _fileSystemWatchers
             = new List<FileSystemWatcher>();
 
-        private IFileSystemViewItemProvider _provider;
+        private List<IFileSystemViewItemProvider> _providers;
         private SynchronizationContext _syncContext;
 
         private bool _isDisposed;
-        public GlobalFileSystemWatcherAdapter(IFileSystemViewItemProvider provider,
-            SynchronizationContext syncContext)
+
+        public List<IFileSystemViewItemProvider> FileSystemItemProviders
         {
-            _provider = provider;
+            get { return _providers; }
+        }
+            
+        public GlobalFileSystemWatcherAdapter(SynchronizationContext syncContext)
+        {
+            _providers = new List<IFileSystemViewItemProvider>();
             _syncContext = syncContext;
 
             CreateFileSystemWatchers();
@@ -116,12 +137,15 @@ namespace Noria.ViewModel
 
         private void UpdateItem(string oldPath, string newPath)
         {
-            var item = _provider.GetFileSystemViewItem(oldPath);
+            foreach (IFileSystemViewItemProvider provider in _providers)
+            {
+                var item = provider.GetFileSystemViewItem(oldPath);
 
-            var updatableItem = item as IFileSystemViewItemUpdatable;
+                var updatableItem = item as IFileSystemViewItemUpdatable;
 
-            if (updatableItem != null)
-                updatableItem.Update(oldPath, newPath);
+                if (updatableItem != null)
+                    updatableItem.Update(oldPath, newPath);
+            }
         }
 
         private void FileSystemWatcher_Renamed(object sender, RenamedEventArgs e)
@@ -141,19 +165,22 @@ namespace Noria.ViewModel
             {
                 lock (_syncRoot)
                 {
-                    var item = _provider.GetFileSystemViewItem(e.FullPath);
-                    var deletableItem = item as IFileSystemViewItemDeletable;
-
-                    if (deletableItem != null)
-                        deletableItem.Delete();
-
-                    var parentDir = GetParentDirectoryPath(e.FullPath);
-                    item = _provider.GetFileSystemViewItem(parentDir);
-
-                    var subItemUpdatable = item as IFileSystemViewSubItemsUpdatable;
-                    if (subItemUpdatable != null)
+                    foreach (IFileSystemViewItemProvider provider in _providers)
                     {
-                        subItemUpdatable.DeleteItem(e.FullPath);
+                        var item = provider.GetFileSystemViewItem(e.FullPath);
+                        var deletableItem = item as IFileSystemViewItemDeletable;
+
+                        if (deletableItem != null)
+                            deletableItem.Delete();
+
+                        var parentDir = GetParentDirectoryPath(e.FullPath);
+                        item = provider.GetFileSystemViewItem(parentDir);
+
+                        var subItemUpdatable = item as IFileSystemViewSubItemsUpdatable;
+                        if (subItemUpdatable != null)
+                        {
+                            subItemUpdatable.DeleteItem(e.FullPath);
+                        }
                     }
                 }
             }, null);
@@ -165,12 +192,15 @@ namespace Noria.ViewModel
             {
                 lock (_syncRoot)
                 {
-                    var parentDir = GetParentDirectoryPath(e.FullPath);
-                    var subItemUpdatable = _provider.GetFileSystemViewItem(parentDir)
-                        as IFileSystemViewSubItemsUpdatable;
+                    foreach (IFileSystemViewItemProvider provider in _providers)
+                    {
+                        var parentDir = GetParentDirectoryPath(e.FullPath);
+                        var subItemUpdatable = provider.GetFileSystemViewItem(parentDir)
+                            as IFileSystemViewSubItemsUpdatable;
 
-                    if (subItemUpdatable != null)
-                        subItemUpdatable.AddItem(e.FullPath);
+                        if (subItemUpdatable != null)
+                            subItemUpdatable.AddItem(e.FullPath);
+                    }
                 }
             }, null);
         }

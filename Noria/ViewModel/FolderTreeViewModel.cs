@@ -24,9 +24,13 @@ namespace Noria.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
         public FolderTreeViewModel()
         {
-            _fileSystemWatcher = new GlobalFileSystemWatcherAdapter(
-                new FolderTreeViewModelFileSystemViewItemProvider(this),
-                SynchronizationContext.Current);
+            var fileSystemItemProvider =
+                new FolderTreeViewModelFileSystemViewItemProvider(this);
+
+            GlobalFileSystemWatcherAdapter
+                .Instance
+                .FileSystemItemProviders
+                .Add(fileSystemItemProvider);
         }
         private void OnPropertyChanged(string propertyName)
         {

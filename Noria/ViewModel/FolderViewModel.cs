@@ -28,9 +28,13 @@ namespace Noria.ViewModel
 
         public FolderViewModel()
         {
-            _fileSystemWatcher = new GlobalFileSystemWatcherAdapter(
-                new FolderViewModelFileSystemViewItemProvider(this),
-                SynchronizationContext.Current);
+            var fileSystemItemProvider =
+                new FolderViewModelFileSystemViewItemProvider(this);
+
+            GlobalFileSystemWatcherAdapter
+                .Instance
+                .FileSystemItemProviders
+                .Add(fileSystemItemProvider);
         }
         public bool DoesUpdateFromFileSystem()
         {
