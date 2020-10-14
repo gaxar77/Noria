@@ -19,12 +19,6 @@ namespace Noria.FilesAndFolders
 
             while (path != null)
             {
-                /*
-                var fileSystemObjectName = System.IO.Path.GetFileName(path);
-                if (fileSystemObjectName == String.Empty)
-                    fileSystemObjectName = path;
-                */
-
                 var pathComponent = new FileSystemPathComponent(path);
 
                 path = System.IO.Path.GetDirectoryName(path);
