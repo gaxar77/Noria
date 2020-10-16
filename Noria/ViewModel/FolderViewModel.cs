@@ -1,14 +1,9 @@
-﻿using System.ComponentModel;
+﻿using Noria.FilesAndFolders;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Windows.Media;
-using System.Windows.Navigation;
-using System.Threading;
-using Noria.FilesAndFolders;
-using System.Runtime.CompilerServices;
 
 namespace Noria.ViewModel
 {
@@ -26,6 +21,8 @@ namespace Noria.ViewModel
             = new List<FolderModel>();
 
         private FileSystemPathComponentChain _pathComponentChain;
+        private FileSystemPathComponentChainViewItemProvider
+            _pathComponentChainViewItemProvider;
 
         GlobalFileSystemWatcherAdapter _fileSystemWatcher;
 
@@ -38,6 +35,14 @@ namespace Noria.ViewModel
                 .Instance
                 .FileSystemItemProviders
                 .Add(fileSystemItemProvider);
+
+            _pathComponentChainViewItemProvider =
+                new FileSystemPathComponentChainViewItemProvider();
+
+            GlobalFileSystemWatcherAdapter
+                .Instance
+                .FileSystemItemProviders
+                .Add(_pathComponentChainViewItemProvider);
         }
         public bool DoesUpdateFromFileSystem()
         {
@@ -113,28 +118,21 @@ namespace Noria.ViewModel
             if (_pathComponentChain != null)
             {
                 _pathComponentChain.Updated -= _pathComponentChain_Updated;
-
-                SynchronizationContext.Current.Post((s) =>
-                {
-                    GlobalFileSystemWatcherAdapter
-                        .Instance
-                        .FileSystemItemProviders
-                        .Remove(_pathComponentChain);
-                }, null);
+                _pathComponentChain.Deleted -= _pathComponentChain_Deleted;
             }
 
             _pathComponentChain = new FileSystemPathComponentChain(
                 _directoryPath);
 
-            _pathComponentChain.Updated += _pathComponentChain_Updated;
+            _pathComponentChainViewItemProvider.PathComponentChain = _pathComponentChain;
 
-            SynchronizationContext.Current.Post((s) =>
-            {
-                GlobalFileSystemWatcherAdapter
-                    .Instance
-                    .FileSystemItemProviders
-                    .Add(_pathComponentChain);
-            }, null);
+            _pathComponentChain.Updated += _pathComponentChain_Updated;
+            _pathComponentChain.Deleted += _pathComponentChain_Deleted;
+        }
+
+        private void _pathComponentChain_Deleted(object sender, EventArgs e)
+        {
+            TryRefresh();
         }
 
         private void _pathComponentChain_Updated(object sender, FileSystemPathComponentChainUpdatedEventArgs e)
@@ -225,9 +223,4 @@ namespace Noria.ViewModel
                 _nextFolders.RemoveAt(0);
         }
     }
-    //public class FolderInvalidatedEventArgs
-    //{
-     //   public string NewFolderPath { get; private set; }
-        
-    //}
 }

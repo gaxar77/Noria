@@ -4,7 +4,7 @@ using System;
 namespace Noria.FilesAndFolders
 {
     public class FileSystemPathComponentLink : IFileSystemViewItem,
-        IFileSystemViewItemUpdatable
+        IFileSystemViewItemUpdatable, IFileSystemViewItemDeletable
     {
         public FileSystemPathComponent PathComponent { get; private set; }
         public FileSystemPathComponentLink NextLink { get; private set; }
@@ -38,12 +38,27 @@ namespace Noria.FilesAndFolders
         }
 
         public event EventHandler Updated;
+        public event EventHandler Deleted;
 
         private void OnUpdated()
         {
             var e = new EventArgs();
 
             Updated?.Invoke(this, e);
+        }
+
+        private void OnDeleted()
+        {
+            var e = new EventArgs();
+
+            Deleted?.Invoke(this, e);
+        }
+
+        public void Delete()
+        {
+            NextLink?.Delete();
+
+            OnDeleted();
         }
     }
 }
