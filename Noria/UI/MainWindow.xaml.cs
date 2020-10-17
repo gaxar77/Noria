@@ -7,6 +7,8 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Noria.Misc;
+using System.Windows.Navigation;
 
 namespace Noria.UI
 {
@@ -35,14 +37,22 @@ namespace Noria.UI
   
     //Todo: Fix problem where deleting the parent or ancestors of the folder in the current view causes nothing to happen, but creates an invalid application state.
     //Todo: Implement cut, copy, and paste.
+        //Copy and paste partially implemented.
+        //Todo: Implement file copy progress dialog.
+        //Todo: Implement initial emptiness of clipboard.
+        //Todo: Implement overwrite confirm messagebox.
+        //Todo: Support copying of folders, not just files.
     //Todo: Implement display of file and folder icons in the folder view.
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        MainWindowViewModel _viewModel;
+        private MainWindowViewModel _viewModel;
         //FolderViewModelUpdaterThroughWatchingFolder _watcherAndUpdater;
+
+        private FileSystemItemClipboard _itemClipboard
+            = new FileSystemItemClipboard();
         public MainWindow()
         {
             InitializeComponent();
@@ -234,12 +244,44 @@ namespace Noria.UI
 
         private void btnCopy_Click(object sender, RoutedEventArgs e)
         {
-            ShowFeatureNotImplementedMessageBox();
+            var fileSystemItem = dgrdFolderView.SelectedItem as FolderItemModel;
+
+            if (fileSystemItem != null)
+            {
+                var clipboardItem = new FileSystemItemClipboardItem()
+                {
+                    ItemPath = fileSystemItem.ItemPath,
+                    Operation = FileSystemItemClipboardStorageOperation.Copy
+                };
+
+                _itemClipboard.Store(clipboardItem);
+            }
         }
 
         private void btnPaste_Click(object sender, RoutedEventArgs e)
         {
-            ShowFeatureNotImplementedMessageBox();
+            var clipboardItem = _itemClipboard.Retrieve();
+
+            if (clipboardItem.Operation == FileSystemItemClipboardStorageOperation.Copy)
+            {
+                if (File.Exists(clipboardItem.ItemPath) &&
+                    !(_viewModel.FolderViewModel.Folder is InaccessibleFolderModel))
+                {
+                    try
+                    {
+                        var itemName = Path.GetFileName(clipboardItem.ItemPath);
+                        var destinationPath = Path.Combine(
+                            _viewModel.FolderViewModel.DirectoryPath,
+                            itemName);
+
+                        File.Copy(clipboardItem.ItemPath, destinationPath, false);
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Unable to copy item.");
+                    }
+                }
+            }
         }
 
         private void btnProperties_Click(object sender, RoutedEventArgs e)
