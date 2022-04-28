@@ -1,6 +1,6 @@
 # Noria
 
-Note: This code became inoperable in one feature for some reason unknown to me.
+Note: This code became inoperative in one feature for some reason unknown to me, and, although I endeavored to find the bug, I failed.
 
 This is a file manager application, having only the most basic features, many of which are not yet implemented.
 I intend to grow it into a large application like the Windows File Explorer.
